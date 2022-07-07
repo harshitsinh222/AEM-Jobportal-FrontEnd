@@ -1,12 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import { borderColor } from "@mui/system";
 function Header() {
   return (
     <div style={{ width: "100%" }}>

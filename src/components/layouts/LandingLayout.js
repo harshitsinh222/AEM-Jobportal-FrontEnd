@@ -1,6 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Header from "../../sections/Header";
+import AddCredentialForm from "../../sections/AddCredentialForm";
+import Navbar from '../Navbar'
 function LandingLayout() {
   return (
     <div style={{ width: "100%" }}>
@@ -12,13 +14,16 @@ function LandingLayout() {
           borderRadius: 1,
         }}
       >
-        <Header />
+        <Navbar />
       </Box>
+        <Header />
+
       <hr
         style={{
           borderColor: "#D3D3D3",
         }}
       />
+      <AddCredentialForm />
     </div>
   );
 }
