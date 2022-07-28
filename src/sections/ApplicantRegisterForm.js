@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useLocalState } from "../util/useLocalStorage";
+import { useNavigate } from "react-router-dom";
 
 function ApplicantRegisterForm() {
+  const navigate = useNavigate();
+  const [setJwt] = useLocalState("", "jwt");
+
   const [file, setFile] = useState();
 
   const [formValue, setformValue] = useState({
@@ -24,6 +29,11 @@ function ApplicantRegisterForm() {
 
   const saveFile = (e) => {
     setFile(e.target.files[0]);
+  };
+
+  const sendLogoutRequest = async () => {
+    await setJwt("");
+    navigate("/");
   };
 
   const sendPostRequest = async (e) => {
@@ -57,10 +67,7 @@ function ApplicantRegisterForm() {
         formValue.applicant_account_status
       );
 
-      const response = await axios.post(
-        "http://localhost:8080/addapplicants",
-        formData
-      );
+      const response = await axios.post("addapplicants", formData);
       console.log("after post: ", response.data);
     } catch (err) {
       console.log(err);
@@ -116,6 +123,8 @@ function ApplicantRegisterForm() {
         DP: <input type="file" name="file" onChange={saveFile} />
         <br />
         <input type="button" value="Add" onClick={sendPostRequest} />
+        <br /> <br />
+        <input type="button" value="Logout" onClick={sendLogoutRequest} />
       </form>
     </div>
   );

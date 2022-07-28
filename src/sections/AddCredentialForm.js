@@ -27,7 +27,7 @@ function AddCredentialForm() {
       formData.append("credential_name", formValue.credential_name);
 
       const response = await axios.post(
-        "http://localhost:8080/applicants/d5a3f2ff-b3d3-4ba9-bbfa-6a45e1935c64/credentials",
+        "applicants/d5a3f2ff-b3d3-4ba9-bbfa-6a45e1935c64/credentials",
         formData
       );
       console.log("after post: ", response.data);

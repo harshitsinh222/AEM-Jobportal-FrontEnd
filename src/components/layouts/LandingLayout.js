@@ -1,8 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Header from "../../sections/Header";
-import AddCredentialForm from "../../sections/AddCredentialForm";
-import Navbar from '../Navbar'
+import Navbar from "../Navbar";
+import { Link } from "react-router-dom";
 function LandingLayout() {
   return (
     <div style={{ width: "100%" }}>
@@ -16,14 +16,15 @@ function LandingLayout() {
       >
         <Navbar />
       </Box>
-        <Header />
-
+      <Header />
       <hr
         style={{
           borderColor: "#D3D3D3",
         }}
       />
-      <AddCredentialForm />
+      <Link to="/applicant">Register Applicant</Link> <br />
+      <Link to="/addCredential">Add a credential</Link> <br/>
+      <Link to="/login">Login</Link>
     </div>
   );
 }
