@@ -14,7 +14,9 @@ function LandingLayout() {
           borderRadius: 1,
         }}
       ></Box>
-      <TeamCardDemo />
+      <div style={{ marginBottom: "40px" }}>
+        <TeamCardDemo />
+      </div>
       <Link to="/applicant">Register Applicant</Link> <br />
       <Link to="/addCredential">Add a credential</Link> <br />
     </div>
