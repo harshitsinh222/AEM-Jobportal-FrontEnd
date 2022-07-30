@@ -94,6 +94,11 @@ export default function PrimarySearchAppBar() {
     navigate("/login");
   };
 
+  const handleHomePage = () => {
+    handleMenuClose();
+    navigate("/");
+  };
+
   const handleLogout = async () => {
     handleMenuClose();
     await setJwt("");
@@ -234,14 +239,15 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography
+          <Button
+            onClick={handleHomePage}
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
             Job Portal
-          </Typography>
+          </Button>
           <Search>
             <StyledInputBase
               placeholder="Search for job titles"
