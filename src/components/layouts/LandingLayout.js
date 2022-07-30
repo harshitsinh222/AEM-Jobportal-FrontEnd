@@ -13,9 +13,7 @@ function LandingLayout() {
 
           borderRadius: 1,
         }}
-      >
-        <Navbar />
-      </Box>
+      ></Box>
       <Header />
       <hr
         style={{
@@ -23,8 +21,8 @@ function LandingLayout() {
         }}
       />
       <Link to="/applicant">Register Applicant</Link> <br />
-      <Link to="/addCredential">Add a credential</Link> <br/>
-      <Link to="/login">Login</Link>
+      <Link to="/addCredential">Add a credential</Link> <br />
+     
     </div>
   );
 }
