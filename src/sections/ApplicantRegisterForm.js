@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function ApplicantRegisterForm() {
   const navigate = useNavigate();
   const [setJwt] = useLocalState("", "jwt");
+  const [setApp] = useLocalState("", "app");
 
   const [file, setFile] = useState();
 
@@ -33,6 +34,7 @@ function ApplicantRegisterForm() {
 
   const sendLogoutRequest = async () => {
     await setJwt("");
+    await setApp("");
     navigate("/");
   };
 
