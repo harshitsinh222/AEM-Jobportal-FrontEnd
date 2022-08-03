@@ -6,14 +6,12 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 function ApplicantRegisterForm() {
   const navigate = useNavigate();
-  const [setJwt] = useLocalState("", "jwt");
-  const [setApp] = useLocalState("", "app");
 
   const [file, setFile] = useState();
 
   const [formValue, setformValue] = useState({
     applicant_name: "",
-    applicant_username: "",
+    username: "",
     applicant_password: "",
     applicant_email_address: "",
     applicant_gender: "",
@@ -33,12 +31,6 @@ function ApplicantRegisterForm() {
     setFile(e.target.files[0]);
   };
 
-  const sendLogoutRequest = async () => {
-    await setJwt("");
-    await setApp("");
-    navigate("/");
-  };
-
   const sendPostRequest = async (e) => {
     e.preventDefault();
 
@@ -46,7 +38,7 @@ function ApplicantRegisterForm() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("applicant_name", formValue.applicant_name);
-      formData.append("applicant_username", formValue.applicant_username);
+      formData.append("username", formValue.username);
       formData.append("applicant_password", formValue.applicant_password);
       formData.append(
         "applicant_email_address",
@@ -70,8 +62,9 @@ function ApplicantRegisterForm() {
         formValue.applicant_account_status
       );
 
-      const response = await axios.post("addapplicants", formData);
+      const response = await axios.post("applicants", formData);
       console.log("after post: ", response.data);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -152,7 +145,7 @@ function ApplicantRegisterForm() {
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="applicant_username"
+              name="username"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
@@ -173,6 +166,7 @@ function ApplicantRegisterForm() {
               Password:{" "}
             </label>
             <TextField
+              type="password"
               id="demo-helper-text-misaligned"
               name="applicant_password"
               onChange={handleChange}
@@ -297,19 +291,6 @@ function ApplicantRegisterForm() {
           }}
         >
           Add
-        </Button>
-        <Button
-          variant="contained"
-          value="Login"
-          onClick={sendLogoutRequest}
-          style={{
-            marginLeft: "30px",
-            width: "100px",
-
-            backgroundColor: "alpha(theme.palette.common.white, 0.15)",
-          }}
-        >
-          Logout
         </Button>
       </form>
     </div>

@@ -31,6 +31,11 @@ function AddCredentialForm() {
     navigate("/");
   };
 
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${jwt} `,
+  };
+
   const sendPostRequest = async (e) => {
     e.preventDefault();
 
@@ -41,7 +46,8 @@ function AddCredentialForm() {
 
       const response = await axios.post(
         `applicants/${app.id}/credentials`,
-        formData
+        formData,
+        { headers: headers }
       );
       console.log("after post: ", response.data);
     } catch (err) {
@@ -50,12 +56,14 @@ function AddCredentialForm() {
   };
 
   useEffect(() => {
-    axios.get(`applicants/${app.id}/credentials`).then((res) => {
-      // const ans = await res.data;
-      //console.log(res.data);
-      setCredential(res.data);
-    });
-  }, [credential]);
+    axios
+      .get(`applicants/${app.id}/credentials`, {
+        headers: { headers },
+      })
+      .then((res) => {
+        setCredential(res.data);
+      });
+  });
 
   return (
     <div style={{ paddingLeft: "15px", paddingTop: "20px" }}>
@@ -87,19 +95,6 @@ function AddCredentialForm() {
         >
           Add
         </Button>
-        <Button
-          variant="contained"
-          value="Login"
-          onClick={sendLogoutRequest}
-          style={{
-            marginLeft: "30px",
-            width: "100px",
-
-            backgroundColor: "alpha(theme.palette.common.white, 0.15)",
-          }}
-        >
-          Logout
-        </Button>
       </form>
 
       <div style={{ paddingTop: "15px" }}>
@@ -115,14 +110,6 @@ function AddCredentialForm() {
           <div>No Credentials to show!!</div>
         )}
       </div>
-      {/* <div>
-        <img
-          src="applicants/profile/2cfaad57-503b-4693-aa38-2a7406aed55d"
-          height="300px"
-          width="300 px"
-          alt="dp"
-        />
-      </div> */}
     </div>
   );
 }

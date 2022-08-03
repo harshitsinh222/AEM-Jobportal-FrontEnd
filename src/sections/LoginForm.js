@@ -74,6 +74,7 @@ function LoginForm() {
           <br />
           <div>
             <TextField
+              type="password"
               label="Password"
               id="demo-helper-text-misaligned"
               name="password"

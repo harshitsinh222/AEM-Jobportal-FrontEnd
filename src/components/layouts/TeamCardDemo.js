@@ -13,6 +13,8 @@ import { useApexInfoStyles } from "@mui-treasury/styles/info/apex";
 import { useGraphicBtnStyles } from "@mui-treasury/styles/button/graphic";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Card, CardActions, Typography } from "@mui/material";
+import { styled, alpha } from "@mui/material/styles";
 
 function Items(props) {
   const { sx, ...other } = props;
@@ -94,22 +96,25 @@ const CustomCard = ({
   description,
   salary,
   postingdate,
-  jobid,
+  btnShow,
 }) => {
   const styles = useStyles();
   const btnStyles = useGraphicBtnStyles();
+  const navigate = useNavigate();
+
+  const handleApplyJob = () => {
+    // navigate(/
+  };
 
   return (
-    <div className={styles.root}>
+    <Card className={styles.root}>
       <Column className={styles.card}>
         <InfoTitle>{title}</InfoTitle>
         <Info position={"middle"} useStyles={useApexInfoStyles}>
           <InfoSubtitle>{subtitle}</InfoSubtitle>
           <InfoSubtitle>{postingdate}</InfoSubtitle>
         </Info>
-        <Button style={{ backgroundColor: "#E8E8E8", height: "20px" }}>
-          ${salary}
-        </Button>
+        {console.log("sel", { btnShow })}
 
         <Box
           pb={1}
@@ -120,8 +125,26 @@ const CustomCard = ({
         >
           {description}
         </Box>
+        {{ btnShow } ? (
+          <CardActions>
+            <Button
+              size="medium"
+              value="Login"
+              onClick={handleApplyJob}
+              style={{
+                width: "100px",
+                height: "40px",
+                backgroundColor: "#1976d2",
+              }}
+            >
+              Apply
+            </Button>
+          </CardActions>
+        ) : (
+          <></>
+        )}
       </Column>
-    </div>
+    </Card>
   );
 };
 
@@ -167,11 +190,12 @@ export const TeamCardDemo = React.memo(function TeamCard() {
                 <Grid container spacing={10}>
                   <Grid item xs={12} md={6} lg={4}>
                     <CustomCard
-                      postingdate={job.job_posting_date}
-                      salary={job.job_salary}
+                      //postingdate={job.job_posting_date}
+                      // salary={job.job_salary}
                       title={job.job_title}
                       subtitle={job.job_location}
                       description={job.job_description}
+                      btnShow={selectedJob}
                     />
                   </Grid>
                 </Grid>
@@ -193,7 +217,7 @@ export const TeamCardDemo = React.memo(function TeamCard() {
                     title={selectedSpecificJob.job_title}
                     subtitle={selectedSpecificJob.job_location}
                     description={selectedSpecificJob.job_description}
-                  />
+                  ></CustomCard>
                 </Grid>
               </Grid>
             </div>
