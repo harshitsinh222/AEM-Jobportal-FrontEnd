@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import TextField from "@mui/material/TextField";
 import { useLocalState } from "../util/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-
+import Button from "@mui/material/Button";
 function LoginForm() {
   const navigate = useNavigate();
   const [jwt, setJwt] = useLocalState("", "jwt");
@@ -51,15 +51,50 @@ function LoginForm() {
   }, [jwt]);
   return (
     <>
-      <div>
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translateX(-50%) translateY(-50%)",
+        }}
+      >
         <form>
-          Username:{" "}
-          <input type="text" name="username" onChange={handleChange} />
+          <div>
+            <TextField
+              label="Username"
+              id="demo-helper-text-misaligned"
+              name="username"
+              onChange={handleChange}
+              size="normal"
+              style={{ width: "300px" }}
+            />
+          </div>
+
           <br />
-          Password:{" "}
-          <input type="text" name="password" onChange={handleChange} />
+          <div>
+            <TextField
+              label="Password"
+              id="demo-helper-text-misaligned"
+              name="password"
+              size="normal"
+              onChange={handleChange}
+              style={{ width: "300px" }}
+            />
+          </div>
           <br />
-          <input type="button" value="Login" onClick={sendLoginRequest} />
+          <Button
+            variant="contained"
+            value="Login"
+            onClick={sendLoginRequest}
+            style={{
+              width: "300px",
+              height: "56px",
+              backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+            }}
+          >
+            Login
+          </Button>
         </form>
       </div>
     </>
