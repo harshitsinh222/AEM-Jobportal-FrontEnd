@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocalState } from "../util/useLocalStorage";
 import { Link, useNavigate } from "react-router-dom";
-
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 function AddCredentialForm() {
   const [file, setFile] = useState();
   const [app, setApp] = useLocalState("", "app");
@@ -57,19 +58,51 @@ function AddCredentialForm() {
   }, [credential]);
 
   return (
-    <div>
+    <div style={{ paddingLeft: "15px", paddingTop: "20px" }}>
       <form>
-        Credential name:{" "}
-        <input type="text" name="credential_name" onChange={handleChange} />
+        <div style={{ flex: 1, marginRight: "10px" }}>
+          <label> Credential name: </label>
+          <TextField
+            id="demo-helper-text-misaligned"
+            name="credential_name"
+            onChange={handleChange}
+            size="small"
+            style={{ width: "300px" }}
+          />
+        </div>
         <br />
-        Upload File: <input type="file" name="file" onChange={saveFile} />
+        Upload File:{"  "}
+        <input type="file" name="file" onChange={saveFile} />
         <br />
-        <input type="button" value="Add" onClick={sendPostRequest} />
-        <br /> <br />
-        <input type="button" value="Logout" onClick={sendLogoutRequest} />
+        <br />
+        <Button
+          variant="contained"
+          value="Login"
+          onClick={sendPostRequest}
+          style={{
+            width: "100px",
+
+            backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+          }}
+        >
+          Add
+        </Button>
+        <Button
+          variant="contained"
+          value="Login"
+          onClick={sendLogoutRequest}
+          style={{
+            marginLeft: "30px",
+            width: "100px",
+
+            backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+          }}
+        >
+          Logout
+        </Button>
       </form>
 
-      <div>
+      <div style={{ paddingTop: "15px" }}>
         {credential ? (
           credential.map((cred) => (
             <div key={cred.id}>

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useLocalState } from "../util/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 function ApplicantRegisterForm() {
   const navigate = useNavigate();
   const [setJwt] = useLocalState("", "jwt");
@@ -76,57 +77,240 @@ function ApplicantRegisterForm() {
     }
   };
   return (
-    <div>
+    <div style={{ paddingLeft: "15px" }}>
       <form>
-        App name:{" "}
-        <input type="text" name="applicant_name" onChange={handleChange} />
+        <div
+          style={{
+            display: "flex",
+            paddingTop: "20px",
+          }}
+        >
+          <div style={{ flex: 1, marginRight: "10px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              App name:{" "}
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="applicant_name"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+          <div style={{ flex: 2, marginRight: "20px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Email Address:{" "}
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="applicant_email_address"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+        </div>
         <br />
-        Username:{" "}
-        <input type="text" name="applicant_username" onChange={handleChange} />
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <div style={{ flex: 1, marginRight: "10px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Username:{" "}
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="applicant_username"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+          <div style={{ flex: 2, marginRight: "20px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Password:{" "}
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="applicant_password"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+        </div>
         <br />
-        Password:{" "}
-        <input
-          type="password"
-          name="applicant_password"
-          onChange={handleChange}
-        />
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <div style={{ flex: 1, marginRight: "10px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Gender:
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="applicant_gender"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+          <div style={{ flex: 2, marginRight: "20px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Contact:
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="applicant_contact_details"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+        </div>
         <br />
-        Email:{" "}
-        <input
-          type="email"
-          name="applicant_email_address"
-          onChange={handleChange}
-        />
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <div style={{ flex: 1, marginRight: "10px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Summary:
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="applicant_professional_summary"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+          <div style={{ flex: 2, marginRight: "20px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Education Attainment:
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="applicant_highest_educational_attainment"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+        </div>
         <br />
-        Gender:{" "}
-        <input type="text" name="applicant_gender" onChange={handleChange} />
-        <br />
-        Contact:{" "}
-        <input
-          type="text"
-          name="applicant_contact_details"
-          onChange={handleChange}
-        />
-        <br />
-        Summary:{" "}
-        <input
-          type="text"
-          name="applicant_professional_summary"
-          onChange={handleChange}
-        />
-        <br />
-        Edu:{" "}
-        <input
-          type="text"
-          name="applicant_highest_educational_attainment"
-          onChange={handleChange}
-        />
-        <br />
-        DP: <input type="file" name="file" onChange={saveFile} />
-        <br />
-        <input type="button" value="Add" onClick={sendPostRequest} />
+        Profile Photo: <input type="file" name="file" onChange={saveFile} />
         <br /> <br />
-        <input type="button" value="Logout" onClick={sendLogoutRequest} />
+        <Button
+          variant="contained"
+          value="Login"
+          onClick={sendPostRequest}
+          style={{
+            width: "100px",
+
+            backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+          }}
+        >
+          Add
+        </Button>
+        <Button
+          variant="contained"
+          value="Login"
+          onClick={sendLogoutRequest}
+          style={{
+            marginLeft: "30px",
+            width: "100px",
+
+            backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+          }}
+        >
+          Logout
+        </Button>
       </form>
     </div>
   );
