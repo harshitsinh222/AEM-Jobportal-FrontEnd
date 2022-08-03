@@ -12,7 +12,43 @@ import { Info, InfoSubtitle, InfoTitle } from "@mui-treasury/components/info";
 import { useApexInfoStyles } from "@mui-treasury/styles/info/apex";
 import { useGraphicBtnStyles } from "@mui-treasury/styles/button/graphic";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
+function Items(props) {
+  const { sx, ...other } = props;
+  return (
+    <Box
+      sx={{
+        bgcolor: (theme) =>
+          theme.palette.mode === "dark" ? "#101010" : "#fff",
+        color: (theme) =>
+          theme.palette.mode === "dark" ? "grey.300" : "grey.800",
+        border: "1px solid",
+        borderColor: (theme) =>
+          theme.palette.mode === "dark" ? "grey.800" : "grey.300",
+        p: 1,
+        borderRadius: 2,
+        fontSize: "0.875rem",
+        fontWeight: "700",
+        ...sx,
+      }}
+      {...other}
+    />
+  );
+}
+
+Item.propTypes = {
+  /**
+   * The system prop that allows defining system overrides as well as additional CSS styles.
+   */
+  sx: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])
+    ),
+    PropTypes.func,
+    PropTypes.object,
+  ]),
+};
 const useStyles = makeStyles(() => ({
   root: {
     marginBottom: "15px",
@@ -52,7 +88,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CustomCard = ({ title, subtitle, description, salary, postingdate }) => {
+const CustomCard = ({
+  title,
+  subtitle,
+  description,
+  salary,
+  postingdate,
+  jobid,
+}) => {
   const styles = useStyles();
   const btnStyles = useGraphicBtnStyles();
 
@@ -84,13 +127,14 @@ const CustomCard = ({ title, subtitle, description, salary, postingdate }) => {
 
 export const TeamCardDemo = React.memo(function TeamCard() {
   const [jobslist, setJobsList] = useState(null);
+  const [selectedSpecificJob, setSelectedSpecificJob] = useState(null);
   const navigate = useNavigate();
   const [selectedJob, setSelectedJob] = useState(false);
 
   useEffect(() => {
     axios.get(`jobs`).then((res) => {
       // const ans = await res.data;
-      console.log(res.data);
+
       setJobsList(res.data);
     });
   }, [jobslist]);
@@ -100,27 +144,62 @@ export const TeamCardDemo = React.memo(function TeamCard() {
       <NoSsr>
         <GoogleFontLoader fonts={[{ font: "Ubuntu", weights: [400, 700] }]} />
       </NoSsr>
-      {jobslist ? (
-        jobslist.map((job) => (
-          <div onClick={() => setSelectedJob(true)}>
-            <Grid container spacing={10}>
-              <Grid item xs={12} md={6} lg={4}>
-                <CustomCard
-                  postingdate={job.job_posting_date}
-                  salary={job.job_salary}
-                  title={job.job_title}
-                  subtitle={job.job_location}
-                  description={job.job_description}
-                />
-              </Grid>
-            </Grid>
-          </div>
-        ))
-      ) : (
-        <div>No Jobs to show!!</div>
-      )}
+      <Box
+        sx={{
+          display: "grid",
+          columnGap: 3,
+          rowGap: 1,
+          gridTemplateColumns: "repeat(2, 1fr)",
+        }}
+      >
+        <Items>
+          {" "}
+          {jobslist ? (
+            jobslist.map((job, index) => (
+              <div
+                key={index}
+                onClick={() => {
+                  setSelectedJob(true);
 
-      {selectedJob && <div style={{ paddingTop: "25px" }}>Right panwl</div>}
+                  setSelectedSpecificJob(job);
+                }}
+              >
+                <Grid container spacing={10}>
+                  <Grid item xs={12} md={6} lg={4}>
+                    <CustomCard
+                      postingdate={job.job_posting_date}
+                      salary={job.job_salary}
+                      title={job.job_title}
+                      subtitle={job.job_location}
+                      description={job.job_description}
+                    />
+                  </Grid>
+                </Grid>
+              </div>
+            ))
+          ) : (
+            <div>No Jobs to show!!</div>
+          )}
+        </Items>
+        <Items>
+          {selectedSpecificJob && (
+            <div>
+              <Grid container spacing={10}>
+                <Grid item xs={12} md={6} lg={4}>
+                  <CustomCard
+                    jobid={selectedSpecificJob.job_id}
+                    postingdate={selectedSpecificJob.job_posting_date}
+                    salary={selectedSpecificJob.job_salary}
+                    title={selectedSpecificJob.job_title}
+                    subtitle={selectedSpecificJob.job_location}
+                    description={selectedSpecificJob.job_description}
+                  />
+                </Grid>
+              </Grid>
+            </div>
+          )}
+        </Items>
+      </Box>
     </>
   );
 });
