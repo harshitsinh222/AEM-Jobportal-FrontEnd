@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../util/useLocalStorage";
 
 const ViewCredentials = () => {
@@ -9,6 +10,12 @@ const ViewCredentials = () => {
   const [credential, setCredential] = useState({
     credential_name: "",
   });
+  const navigate = useNavigate();
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${jwt} `,
+  };
 
   const handleChange = (event) => {
     setCredential({
@@ -21,10 +28,6 @@ const ViewCredentials = () => {
     setFile(e.target.files[0]);
   };
 
-  function updateCredential(prop, value) {
-    credential[prop] = value;
-  }
-
   useEffect(() => {
     //  if (jwt) {
     axios.get(`${credential_ID}`).then((res) => {
@@ -33,16 +36,19 @@ const ViewCredentials = () => {
       setCredential(res.data);
     });
     //}
-  }, [credential]);
+  }, [credential_ID]);
 
-  const saveCredential = () => {
+  const saveCredential = async () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("credential_name", credential.credential_name);
 
-      const res = axios.put(`credentials/${credential_ID}`, formData);
+      const res = await axios.put(`${credential_ID}`, formData, {
+        headers: headers,
+      });
       console.log("after put: ", res.data);
+      navigate("/addCredential");
     } catch (err) {
       console.log(err);
     }
@@ -62,14 +68,7 @@ const ViewCredentials = () => {
             value={credential.credential_name}
           />
           <br />
-          Upload File:{" "}
-          <input
-            type="file"
-            name="file"
-            onChange={saveFile}
-            //value={credential.credential_file_name}
-          />
-          {/* {file? {credential.credential_file_name}:''} */}
+          Upload File: <input type="file" name="file" onChange={saveFile} />
           <br />
           <input type="button" value="Add" onClick={saveCredential} />
         </>

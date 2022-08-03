@@ -5,14 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 function ApplicantRegisterForm() {
   const navigate = useNavigate();
-  const [setJwt] = useLocalState("", "jwt");
-  const [setApp] = useLocalState("", "app");
 
   const [file, setFile] = useState();
 
   const [formValue, setformValue] = useState({
     applicant_name: "",
-    applicant_username: "",
+    username: "",
     applicant_password: "",
     applicant_email_address: "",
     applicant_gender: "",
@@ -32,12 +30,6 @@ function ApplicantRegisterForm() {
     setFile(e.target.files[0]);
   };
 
-  const sendLogoutRequest = async () => {
-    await setJwt("");
-    await setApp("");
-    navigate("/");
-  };
-
   const sendPostRequest = async (e) => {
     e.preventDefault();
 
@@ -45,7 +37,7 @@ function ApplicantRegisterForm() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("applicant_name", formValue.applicant_name);
-      formData.append("applicant_username", formValue.applicant_username);
+      formData.append("username", formValue.username);
       formData.append("applicant_password", formValue.applicant_password);
       formData.append(
         "applicant_email_address",
@@ -69,8 +61,9 @@ function ApplicantRegisterForm() {
         formValue.applicant_account_status
       );
 
-      const response = await axios.post("addapplicants", formData);
+      const response = await axios.post("applicants", formData);
       console.log("after post: ", response.data);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -82,7 +75,7 @@ function ApplicantRegisterForm() {
         <input type="text" name="applicant_name" onChange={handleChange} />
         <br />
         Username:{" "}
-        <input type="text" name="applicant_username" onChange={handleChange} />
+        <input type="text" name="username" onChange={handleChange} />
         <br />
         Password:{" "}
         <input
@@ -125,8 +118,6 @@ function ApplicantRegisterForm() {
         DP: <input type="file" name="file" onChange={saveFile} />
         <br />
         <input type="button" value="Add" onClick={sendPostRequest} />
-        <br /> <br />
-        <input type="button" value="Logout" onClick={sendLogoutRequest} />
       </form>
     </div>
   );

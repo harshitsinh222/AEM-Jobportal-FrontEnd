@@ -30,13 +30,13 @@ function AddCredentialForm() {
     navigate("/");
   };
 
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${jwt} `,
+  };
+
   const sendPostRequest = async (e) => {
     e.preventDefault();
-
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt} `,
-    };
 
     try {
       const formData = new FormData();
@@ -57,15 +57,12 @@ function AddCredentialForm() {
   useEffect(() => {
     axios
       .get(`applicants/${app.id}/credentials`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt} `,
-        },
+        headers: { headers },
       })
       .then((res) => {
         setCredential(res.data);
       });
-  }, [credential]);
+  }, [app.id]);
 
   return (
     <div>
@@ -76,8 +73,6 @@ function AddCredentialForm() {
         Upload File: <input type="file" name="file" onChange={saveFile} />
         <br />
         <input type="button" value="Add" onClick={sendPostRequest} />
-        <br /> <br />
-        <input type="button" value="Logout" onClick={sendLogoutRequest} />
       </form>
 
       <div>
@@ -93,14 +88,6 @@ function AddCredentialForm() {
           <div>No Credentials to show!!</div>
         )}
       </div>
-      {/* <div>
-        <img
-          src="applicants/profile/2cfaad57-503b-4693-aa38-2a7406aed55d"
-          height="300px"
-          width="300 px"
-          alt="dp"
-        />
-      </div> */}
     </div>
   );
 }

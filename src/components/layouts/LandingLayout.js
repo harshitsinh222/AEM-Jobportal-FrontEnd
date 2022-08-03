@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import TeamCardDemo from "./TeamCardDemo";
 function LandingLayout() {
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", backgroundColor: "#faf9f8" }}>
       <Box
         sx={{
           display: "flex",
@@ -17,7 +17,6 @@ function LandingLayout() {
       <div style={{ marginBottom: "40px" }}>
         <TeamCardDemo />
       </div>
-      <Link to="/applicant">Register Applicant</Link> <br />
       <Link to="/addCredential">Add a credential</Link> <br />
     </div>
   );

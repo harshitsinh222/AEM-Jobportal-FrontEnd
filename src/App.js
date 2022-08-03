@@ -8,6 +8,7 @@ import LoginForm from "./sections/LoginForm";
 import PrivateRoute from "./PrivateRoute";
 import ViewCredentials from "./pages/ViewCredentials";
 import Navbar from "./components/Navbar";
+import ViewApplicants from "./pages/ViewApplicants";
 function App() {
   return (
     <>
@@ -16,15 +17,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/signup" element={<ApplicantRegisterForm />} />
 
-          <Route
-            path="/applicant"
-            element={
-              <PrivateRoute>
-                <ApplicantRegisterForm />
-              </PrivateRoute>
-            }
-          />
           <Route
             path="/addCredential"
             element={
@@ -38,6 +32,14 @@ function App() {
             element={
               <PrivateRoute>
                 <ViewCredentials />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/applicants/:id"
+            element={
+              <PrivateRoute>
+                <ViewApplicants />
               </PrivateRoute>
             }
           />
