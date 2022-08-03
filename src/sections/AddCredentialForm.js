@@ -33,6 +33,11 @@ function AddCredentialForm() {
   const sendPostRequest = async (e) => {
     e.preventDefault();
 
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt} `,
+    };
+
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -40,7 +45,8 @@ function AddCredentialForm() {
 
       const response = await axios.post(
         `applicants/${app.id}/credentials`,
-        formData
+        formData,
+        { headers: headers }
       );
       console.log("after post: ", response.data);
     } catch (err) {
@@ -49,11 +55,16 @@ function AddCredentialForm() {
   };
 
   useEffect(() => {
-    axios.get(`applicants/${app.id}/credentials`).then((res) => {
-      // const ans = await res.data;
-      //console.log(res.data);
-      setCredential(res.data);
-    });
+    axios
+      .get(`applicants/${app.id}/credentials`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt} `,
+        },
+      })
+      .then((res) => {
+        setCredential(res.data);
+      });
   }, [credential]);
 
   return (
