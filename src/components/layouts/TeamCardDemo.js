@@ -19,6 +19,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
+import { useLocalState } from "../../util/useLocalStorage";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -150,10 +151,6 @@ const CustomCard = ({
   const btnStyles = useGraphicBtnStyles();
   const navigate = useNavigate();
 
-  const handleApplyJob = () => {
-    // navigate(/
-  };
-
   return (
     <Card className={styles.root}>
       <Column className={styles.card}>
@@ -179,6 +176,7 @@ const CustomCard = ({
   );
 };
 const RightPanel = ({
+  jobid,
   title,
   subtitle,
   description,
@@ -193,12 +191,15 @@ const RightPanel = ({
   companyContact,
   companyEmail,
 }) => {
+  const [app] = useLocalState("", "app");
+
   const styles = useStyles();
   const btnStyles = useGraphicBtnStyles();
   const navigate = useNavigate();
 
   const handleApplyJob = () => {
-    // navigate(/
+    // console.log("app id: " + app.id + "job id: " + jobid);
+    navigate(`applyJob?appid=${app.id}&jobid=${jobid}`);
   };
 
   return (
@@ -236,7 +237,7 @@ const RightPanel = ({
               color: "white",
             }}
           >
-            Apply
+            Easy Apply
           </Button>
         ) : (
           <></>
@@ -417,7 +418,7 @@ export const TeamCardDemo = React.memo(function TeamCard() {
               <div>
                 <Grid style={{ width: "800px" }} spacing={10}>
                   <RightPanel
-                    jobid={selectedSpecificJob.job_id}
+                    jobid={selectedSpecificJob.id}
                     postingdate={selectedSpecificJob.job_posting_date}
                     salary={selectedSpecificJob.job_salary}
                     title={selectedSpecificJob.job_title}

@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useLocalState } from "../util/useLocalStorage";
-import { Link, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import CredentialsTable from "../pages/CredentialsTable";
+
 function AddCredentialForm() {
   const [file, setFile] = useState();
-  const [app, setApp] = useLocalState("", "app");
-  const [jwt, setJwt] = useLocalState("", "jwt");
-  const [credential, setCredential] = useState(null);
-  const navigate = useNavigate();
+  const [app] = useLocalState("", "app");
+  const [jwt] = useLocalState("", "jwt");
 
   const [formValue, setformValue] = useState({
     credential_name: "",
@@ -23,12 +22,6 @@ function AddCredentialForm() {
 
   const saveFile = (e) => {
     setFile(e.target.files[0]);
-  };
-
-  const sendLogoutRequest = async () => {
-    await setJwt("");
-    await setApp("");
-    navigate("/");
   };
 
   const headers = {
@@ -54,16 +47,6 @@ function AddCredentialForm() {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    axios
-      .get(`applicants/${app.id}/credentials`, {
-        headers: { headers },
-      })
-      .then((res) => {
-        setCredential(res.data);
-      });
-  });
 
   return (
     <div style={{ paddingLeft: "15px", paddingTop: "20px" }}>
@@ -95,21 +78,11 @@ function AddCredentialForm() {
         >
           Add
         </Button>
+        <br />
+        <br />
       </form>
 
-      <div style={{ paddingTop: "15px" }}>
-        {credential ? (
-          credential.map((cred) => (
-            <div key={cred.id}>
-              <Link to={`/credentials/${cred.id}`}>
-                Credential ID: {cred.id}
-              </Link>
-            </div>
-          ))
-        ) : (
-          <div>No Credentials to show!!</div>
-        )}
-      </div>
+      <CredentialsTable />
     </div>
   );
 }

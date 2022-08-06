@@ -8,6 +8,7 @@ function LoginForm() {
   const navigate = useNavigate();
   const [jwt, setJwt] = useLocalState("", "jwt");
   const [app, setApp] = useLocalState("", "app");
+  const [error, setError] = useState("");
   const [formValue, setFormValue] = useState({
     username: "",
     password: "",
@@ -43,6 +44,11 @@ function LoginForm() {
           setJwt(response.headers.authorization);
           setApp(response.data);
         }
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setError("Invalid Credentials!");
+        } else setError("Server error!");
       });
   };
   useEffect(() => {
@@ -97,6 +103,8 @@ function LoginForm() {
             Login
           </Button>
         </form>
+        {console.log("error: ", error)}
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </>
   );

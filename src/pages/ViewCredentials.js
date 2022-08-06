@@ -2,8 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../util/useLocalStorage";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+
 const ViewCredentials = () => {
   const credential_ID = window.location.href.split("/credentials/")[1];
   const [file, setFile] = useState();
@@ -56,42 +55,23 @@ const ViewCredentials = () => {
   };
 
   return (
-    <div style={{ paddingLeft: "10px", paddingTop: "10px" }}>
+    <div>
       <h1>Credential ID: {credential_ID}</h1>
 
       {credential ? (
-        <div>
-          <form>
-            <div style={{ flex: 1, marginRight: "10px" }}>
-              <label> Credential name: </label>
-              <TextField
-                id="demo-helper-text-misaligned"
-                name="credential_name"
-                onChange={handleChange}
-                size="small"
-                style={{ width: "300px" }}
-                value={credential.credential_name}
-              />
-            </div>
-            <br />
-            Upload File:{"  "}
-            <input type="file" name="file" onChange={saveFile} />
-            <br />
-            <br />
-            <Button
-              variant="contained"
-              value="Login"
-              onClick={saveCredential}
-              style={{
-                width: "100px",
-
-                backgroundColor: "alpha(theme.palette.common.white, 0.15)",
-              }}
-            >
-              Add
-            </Button>
-          </form>
-        </div>
+        <>
+          Credential name:{" "}
+          <input
+            type="text"
+            name="credential_name"
+            onChange={handleChange}
+            value={credential.credential_name}
+          />
+          <br />
+          Upload File: <input type="file" name="file" onChange={saveFile} />
+          <br />
+          <input type="button" value="Add" onClick={saveCredential} />
+        </>
       ) : (
         <div>No Credentials to show!!</div>
       )}

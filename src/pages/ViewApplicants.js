@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../util/useLocalStorage";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import CredentialsTable from "./CredentialsTable";
 
 const ViewApplicants = () => {
   const applicant_ID = window.location.href.split("/applicants/")[1];
@@ -46,6 +47,10 @@ const ViewApplicants = () => {
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${jwt} `,
+  };
+
+  const addCredentials = () => {
+    navigate("/addCredential");
   };
 
   const updateApplicant = async () => {
@@ -326,6 +331,18 @@ const ViewApplicants = () => {
               }}
             >
               Add
+            </Button>
+            <br /> <br />
+            <Button
+              variant="contained"
+              onClick={addCredentials}
+              style={{
+                width: "100px",
+
+                backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+              }}
+            >
+              Add Credentials
             </Button>
           </form>
         </div>

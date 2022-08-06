@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import ViewCredentials from "./pages/ViewCredentials";
 import Navbar from "./components/Navbar";
 import ViewApplicants from "./pages/ViewApplicants";
+import ApplyJob from "./pages/ApplyJob";
 function App() {
   return (
     <>
@@ -19,6 +20,14 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/signup" element={<ApplicantRegisterForm />} />
 
+          <Route
+            path="/applyJob"
+            element={
+              <PrivateRoute>
+                <ApplyJob />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/addCredential"
             element={
