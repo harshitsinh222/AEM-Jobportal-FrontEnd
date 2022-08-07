@@ -168,6 +168,12 @@ export default function PrimarySearchAppBar() {
     };
   }, [app]);
 
+  const navItems = ["Applied Jobs"];
+
+  const handleAppliedJobs = () => {
+    navigate('/appliedJobs')
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -184,6 +190,19 @@ export default function PrimarySearchAppBar() {
           </Button>
 
           <Box sx={{ flexGrow: 1 }} />
+          {app && (
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item}
+                  sx={{ color: "#fff" }}
+                  onClick={handleAppliedJobs}
+                >
+                  {item}
+                </Button>
+              ))}
+            </Box>
+          )}
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               onClick={handleProfileMenuOpen}

@@ -34,13 +34,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function CustomizedTables() {
   const [app, setApp] = useLocalState("", "app");
   const [jwt, setJwt] = useLocalState("", "jwt");
-  const [resumeURL, setResumeURL] = useLocalState("", "url");
-  const [credential, setCredential] = React.useState(null);
+  const [appDetails, setAppDetails] = React.useState(null);
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${jwt} `,
   };
-  const url = `applicants/${app.id}/credentials`;
+  const url = `appdetails/${app.id}`;
 
   React.useEffect(() => {
     axios
@@ -48,39 +47,32 @@ export default function CustomizedTables() {
         headers: { headers },
       })
       .then((res) => {
-        setCredential(res.data);
-        //console.log("cred: ", credential);
-        credential &&
-          credential.map((cred) => {
-            if (
-              cred.credential_name.toString().toLowerCase() ===
-              "resume"
-            )
-              setResumeURL(cred.document);
-          });
+        setAppDetails(res.data);
       });
-  });
+  }, []);
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Credential Name</StyledTableCell>
-            <StyledTableCell align="center">File Name</StyledTableCell>
+            <StyledTableCell>Job Title</StyledTableCell>
+            <StyledTableCell align="center">Company Name</StyledTableCell>
+            <StyledTableCell align="center">Application Status</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {credential &&
-            credential.map((cred) => (
-              <StyledTableRow key={cred.id}>
+          {appDetails &&
+            appDetails.map((appDeets) => (
+              <StyledTableRow key={appDeets.applicationID}>
                 <StyledTableCell component="th" scope="row">
-                  <Link to={`/credentials/${cred.id}`}>
-                    {cred.credential_name}
-                  </Link>
+                  {appDeets.job.job_title}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {cred.document}
+                  {appDeets.job.company.company_name}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {appDeets.application_status}
                 </StyledTableCell>
               </StyledTableRow>
             ))}

@@ -8,6 +8,7 @@ import CredentialsTable from "./CredentialsTable";
 
 const ApplyJob = () => {
   const [jwt, setJwt] = useLocalState("", "jwt");
+  const [resumeURL, setResumeURL] = useLocalState("", "url");
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -25,16 +26,20 @@ const ApplyJob = () => {
 
   const reqBody = {
     application_status: "applied",
+    application_doc: resumeURL,
   };
 
   const navigate = useNavigate();
 
   const handleApplyJob = async () => {
+    //console.log('req',reqBody);
     await axios
       .post(`appdetails/${appid}/${jobid}`, reqBody, {
         headers: headers,
       })
-      .then(navigate("/"));
+      .then(
+        navigate("/")
+      );
   };
   const handleCancelJob = () => {
     navigate("/");

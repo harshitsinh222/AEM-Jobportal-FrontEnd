@@ -10,6 +10,8 @@ import ViewCredentials from "./pages/ViewCredentials";
 import Navbar from "./components/Navbar";
 import ViewApplicants from "./pages/ViewApplicants";
 import ApplyJob from "./pages/ApplyJob";
+import AppliedJobsTable from "./pages/AppliedJobsTable";
+
 function App() {
   return (
     <>
@@ -41,6 +43,14 @@ function App() {
             element={
               <PrivateRoute>
                 <ViewCredentials />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/appliedJobs"
+            element={
+              <PrivateRoute>
+                <AppliedJobsTable />
               </PrivateRoute>
             }
           />
