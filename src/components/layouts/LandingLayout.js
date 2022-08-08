@@ -17,7 +17,6 @@ function LandingLayout() {
       <div style={{ marginBottom: "40px" }}>
         <TeamCardDemo />
       </div>
-      <Link to="/addCredential">Add a credential</Link> <br />
     </div>
   );
 }

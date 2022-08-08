@@ -22,7 +22,8 @@ export default function PrimarySearchAppBar() {
   const [app, setApp] = useLocalState("", "app");
   const [jwt, setJwt] = useLocalState("", "jwt");
   const navigate = useNavigate();
-
+  const [company, setCompany] = useLocalState("", "company");
+  const [url, setUrl] = useLocalState("", "url");
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const handleProfileMenuOpen = (event) => {
@@ -65,7 +66,9 @@ export default function PrimarySearchAppBar() {
   const handleLogout = async () => {
     handleMenuClose();
     await setJwt("");
+    await setUrl("");
     await setApp("");
+    await setCompany("");
     navigate("/");
   };
 
@@ -171,7 +174,13 @@ export default function PrimarySearchAppBar() {
   const navItems = ["Applied Jobs"];
 
   const handleAppliedJobs = () => {
-    navigate('/appliedJobs')
+    navigate("/appliedJobs");
+  };
+  const handlePostJob = () => {
+    navigate("/postJob");
+  };
+  const handleAddCompany = () => {
+    navigate("/addCompany");
   };
 
   return (
@@ -197,12 +206,24 @@ export default function PrimarySearchAppBar() {
                   key={item}
                   sx={{ color: "#fff" }}
                   onClick={handleAppliedJobs}
+                  style={{ color: "white", marginRight: "10px" }}
                 >
                   {item}
                 </Button>
               ))}
             </Box>
           )}
+
+          <Button
+            onClick={handleAddCompany}
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "none", sm: "block" } }}
+            style={{ color: "white" }}
+          >
+            Add a Company
+          </Button>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               onClick={handleProfileMenuOpen}

@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../util/useLocalStorage";
-
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 const ViewCredentials = () => {
   const credential_ID = window.location.href.split("/credentials/")[1];
   const [file, setFile] = useState();
@@ -55,23 +56,36 @@ const ViewCredentials = () => {
   };
 
   return (
-    <div>
+    <div style={{ paddingLeft: "15px", paddingTop: "20px" }}>
       <h1>Credential ID: {credential_ID}</h1>
 
       {credential ? (
-        <>
-          Credential name:{" "}
-          <input
-            type="text"
+        <div style={{ flex: 1, marginRight: "20px" }}>
+          <label> Credential name: </label>
+          <TextField
+            id="demo-helper-text-misaligned"
+            value={credential.credential_name}
             name="credential_name"
             onChange={handleChange}
-            value={credential.credential_name}
+            size="small"
+            style={{ width: "300px" }}
           />
-          <br />
+          <br /> <br />
           Upload File: <input type="file" name="file" onChange={saveFile} />
-          <br />
-          <input type="button" value="Add" onClick={saveCredential} />
-        </>
+          <br /> <br />
+          <Button
+            onClick={saveCredential}
+            variant="contained"
+            value="Login"
+            style={{
+              width: "100px",
+
+              backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+            }}
+          >
+            Add
+          </Button>
+        </div>
       ) : (
         <div>No Credentials to show!!</div>
       )}

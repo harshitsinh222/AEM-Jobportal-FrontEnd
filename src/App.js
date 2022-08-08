@@ -11,7 +11,9 @@ import Navbar from "./components/Navbar";
 import ViewApplicants from "./pages/ViewApplicants";
 import ApplyJob from "./pages/ApplyJob";
 import AppliedJobsTable from "./pages/AppliedJobsTable";
-
+import PostJobForm from "./sections/PostJobForm";
+import AddCompanyForm from "./sections/AddCompanyForm";
+import ViewJobs from "./pages/ViewJobs";
 function App() {
   return (
     <>
@@ -51,6 +53,30 @@ function App() {
             element={
               <PrivateRoute>
                 <AppliedJobsTable />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/addCompany"
+            element={
+              <PrivateRoute>
+                <AddCompanyForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/postJob"
+            element={
+              <PrivateRoute>
+                <PostJobForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/job/:id"
+            element={
+              <PrivateRoute>
+                <ViewJobs />
               </PrivateRoute>
             }
           />

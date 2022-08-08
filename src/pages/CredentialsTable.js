@@ -53,8 +53,7 @@ export default function CustomizedTables() {
         credential &&
           credential.map((cred) => {
             if (
-              cred.credential_name.toString().toLowerCase() ===
-              "resume"
+              cred.credential_name.toString().toLowerCase().includes("resume")
             )
               setResumeURL(cred.document);
           });
@@ -67,7 +66,7 @@ export default function CustomizedTables() {
         <TableHead>
           <TableRow>
             <StyledTableCell>Credential Name</StyledTableCell>
-            <StyledTableCell align="center">File Name</StyledTableCell>
+            <StyledTableCell align="center">File</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -80,7 +79,7 @@ export default function CustomizedTables() {
                   </Link>
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {cred.document}
+                  <a href={`${cred.document}`}>View</a>
                 </StyledTableCell>
               </StyledTableRow>
             ))}
