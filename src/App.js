@@ -10,8 +10,12 @@ import Navbar from "./components/Navbar";
 import ViewApplicants from "./pages/ViewApplicants";
 import ApplyJob from "./pages/ApplyJob";
 import AppliedJobsTable from "./pages/AppliedJobsTable";
+import PostJobForm from "./sections/PostJobForm";
+import AddCompanyForm from "./sections/AddCompanyForm";
+import ViewJobs from "./pages/ViewJobs";
 import LandingLayout from "./components/layouts/LandingLayout";
-
+import { useState } from "react";
+import ViewJobsForCompany from "./pages/ViewJobsForCompany";
 function App() {
   return (
     <>
@@ -55,10 +59,42 @@ function App() {
             }
           />
           <Route
+            path="/addCompany"
+            element={
+              <PrivateRoute>
+                <AddCompanyForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/postJob"
+            element={
+              <PrivateRoute>
+                <PostJobForm />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/job/:id"
+            element={
+              <PrivateRoute>
+                <ViewJobs />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/applicants/:id"
             element={
               <PrivateRoute>
                 <ViewApplicants />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/company/:id/jobs"
+            element={
+              <PrivateRoute>
+                <ViewJobsForCompany />
               </PrivateRoute>
             }
           />

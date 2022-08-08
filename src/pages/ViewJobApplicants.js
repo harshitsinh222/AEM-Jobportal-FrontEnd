@@ -31,11 +31,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function CustomizedTables() {
+export default function ViewJobApplicants() {
   const [app, setApp] = useLocalState("", "app");
   const [jwt, setJwt] = useLocalState("", "jwt");
-  const [resumeURL, setResumeURL] = useLocalState("", "url");
-  const [credential, setCredential] = React.useState(null);
+  const [appDetails, setAppDetails] = React.useState(null);
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${jwt} `,
@@ -48,15 +47,7 @@ export default function CustomizedTables() {
         headers: { headers },
       })
       .then((res) => {
-        setCredential(res.data);
-        //console.log("cred: ", credential);
-        credential &&
-          credential.map((cred) => {
-            if (
-              cred.credential_name.toString().toLowerCase().includes("resume")
-            )
-              setResumeURL(cred.document);
-          });
+        setAppDetails(res.data);
       });
   });
 
@@ -70,8 +61,8 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {credential &&
-            credential.map((cred) => (
+          {appDetails &&
+            appDetails.map((cred) => (
               <StyledTableRow key={cred.id}>
                 <StyledTableCell component="th" scope="row">
                   <Link to={`/credentials/${cred.id}`}>

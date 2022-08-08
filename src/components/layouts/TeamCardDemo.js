@@ -13,7 +13,7 @@ import { useApexInfoStyles } from "@mui-treasury/styles/info/apex";
 import { useGraphicBtnStyles } from "@mui-treasury/styles/button/graphic";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Card, CardActions, Typography } from "@mui/material";
+import { Card, CardActions, TextField, Typography } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import Toolbar from "@mui/material/Toolbar";
@@ -159,7 +159,6 @@ const CustomCard = ({
           <InfoSubtitle>{subtitle}</InfoSubtitle>
           <InfoSubtitle>{postingdate}</InfoSubtitle>
         </Info>
-        {console.log("sel", { btnShow })}
 
         <Box
           className={styles.multiLineEllipsis}
@@ -198,7 +197,6 @@ const RightPanel = ({
   const navigate = useNavigate();
 
   const handleApplyJob = () => {
-    // console.log("app id: " + app.id + "job id: " + jobid);
     navigate(`applyJob?appid=${app.id}&jobid=${jobid}`);
   };
 
@@ -295,24 +293,29 @@ export const TeamCardDemo = React.memo(function TeamCard() {
   const navigate = useNavigate();
   const [searchedLocation, setSearchedLocation] = useState("");
   const [searchedJob, setSearchedJob] = useState("");
+  const tempArray = [];
   const [selectedJob, setSelectedJob] = useState(false);
   const handleSearch = () => {
     jobslist.filter((job) => {
-      job.job_title.toLowerCase().includes(searchedJob);
-      setTemp(job);
+      console.log(searchedLocation.searchLocation.toLowerCase());
+      if (
+        job.job_title
+          .toLowerCase()
+          .includes(searchedJob.searchfield.toLowerCase()) &&
+        job.job_location
+          .toLowerCase()
+          .includes(searchedLocation.searchLocation.toLowerCase())
+      ) {
+        tempArray.push(job);
+      }
     });
-    // console.log(temp);
+
+    setTemp(tempArray);
   };
   useEffect(() => {
     axios.get(`jobs`).then((res) => {
-      // const ans = await res.data;
-
       setJobsList(res.data);
-      setTemp(jobslist);
     });
-    // if (jobslist) {
-    //   handleSearch();
-    // }
   }, [jobslist]);
 
   return (
@@ -327,6 +330,7 @@ export const TeamCardDemo = React.memo(function TeamCard() {
         >
           <Search>
             <StyledInputBase
+              name="searchfield"
               placeholder="Search for job titles"
               inputProps={{ "aria-label": "search" }}
               onChange={(event) => {
@@ -340,6 +344,7 @@ export const TeamCardDemo = React.memo(function TeamCard() {
 
           <Search>
             <StyledInputBase
+              name="searchLocation"
               placeholder="Location"
               inputProps={{ "aria-label": "search" }}
               onChange={(event) => {
@@ -350,7 +355,7 @@ export const TeamCardDemo = React.memo(function TeamCard() {
               }}
             />
           </Search>
-          <IconButton
+          <Button
             size="large"
             aria-label="search icon"
             color="inherit"
@@ -359,7 +364,7 @@ export const TeamCardDemo = React.memo(function TeamCard() {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-          </IconButton>
+          </Button>
         </Toolbar>
       </Box>
       <hr />
@@ -373,35 +378,66 @@ export const TeamCardDemo = React.memo(function TeamCard() {
             style={{ width: "400px", marginLeft: "60px", marginTop: "40px" }}
           >
             {" "}
-            {console.log("hee" + { temp })}
             {temp ? (
-              temp.map((job, index) => (
-                <div
-                  key={index}
-                  onClick={() => {
-                    setSelectedJob(true);
+              <div>
+                {" "}
+                {temp &&
+                  temp.map((job, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setSelectedJob(true);
 
-                    setSelectedSpecificJob(job);
-                  }}
-                >
-                  <Grid
-                    container
-                    spacing={10}
-                    style={{ width: "400px", marginBottom: "40px" }}
-                  >
-                    <CustomCard
-                      //postingdate={job.job_posting_date}
-                      // salary={job.job_salary}
-                      title={job.job_title}
-                      subtitle={job.job_location}
-                      description={job.job_description}
-                      btnShow={selectedJob}
-                    />
-                  </Grid>
-                </div>
-              ))
+                        setSelectedSpecificJob(job);
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={10}
+                        style={{ width: "400px", marginBottom: "40px" }}
+                      >
+                        <CustomCard
+                          //postingdate={job.job_posting_date}
+                          // salary={job.job_salary}
+                          title={job.job_title}
+                          subtitle={job.job_location}
+                          description={job.job_description}
+                          btnShow={selectedJob}
+                        />
+                      </Grid>
+                    </div>
+                  ))}
+              </div>
             ) : (
-              <div>No Jobs to show!!</div>
+              <div>
+                {" "}
+                {jobslist &&
+                  jobslist.map((job, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setSelectedJob(true);
+
+                        setSelectedSpecificJob(job);
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={10}
+                        style={{ width: "400px", marginBottom: "40px" }}
+                      >
+                        <CustomCard
+                          //postingdate={job.job_posting_date}
+                          // salary={job.job_salary}
+                          title={job.job_title}
+                          subtitle={job.job_location}
+                          description={job.job_description}
+                          btnShow={selectedJob}
+                        />
+                      </Grid>
+                    </div>
+                  ))}
+              </div>
             )}
           </Items>
           <Items

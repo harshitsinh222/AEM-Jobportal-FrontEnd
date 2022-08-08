@@ -37,9 +37,7 @@ const ApplyJob = () => {
       .post(`appdetails/${appid}/${jobid}`, reqBody, {
         headers: headers,
       })
-      .then(
-        navigate("/")
-      );
+      .then(navigate("/"));
   };
   const handleCancelJob = () => {
     navigate("/");
@@ -53,7 +51,7 @@ const ApplyJob = () => {
       <CredentialsTable />
       <br />
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid item xs={6}>
+        <Grid item xs={3}>
           <Button
             size="medium"
             value="apply"
@@ -68,7 +66,7 @@ const ApplyJob = () => {
             Apply
           </Button>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={3}>
           <Button
             size="medium"
             value="cancel"

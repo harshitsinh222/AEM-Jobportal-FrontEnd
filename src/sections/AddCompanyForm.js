@@ -1,64 +1,107 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useLocalState } from "../util/useLocalStorage";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
+import { useEffect } from "react";
 import Button from "@mui/material/Button";
-function ApplicantRegisterForm() {
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { Typography } from "@mui/material";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+function AddCompanyForm() {
   const navigate = useNavigate();
 
-  const [file, setFile] = useState();
-
+  const [company, setCompany] = useLocalState("", "company");
+  const [companyData, setCompanyData] = useState(null);
+  const [jwt] = useLocalState("", "jwt");
   const [formValue, setformValue] = useState({
-    name: "",
+    company_address: "",
+    company_contact: "",
+    company_email: "",
+    company_name: "",
+    company_website: "",
     username: "",
     password: "",
-    email_address: "",
-    gender: "",
-    contact_details: "",
-    professional_summary: "",
-    isAdmin: null,
-    highest_educational_attainment: "",
+    account_status: "yes",
   });
   const handleChange = (event) => {
     setformValue({
       ...formValue,
       [event.target.name]: event.target.value,
     });
-  }; 
-
-  const saveFile = (e) => {
-    setFile(e.target.files[0]);
   };
-
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${jwt} `,
+  };
   const sendPostRequest = async (e) => {
     e.preventDefault();
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("name", formValue.name);
-      formData.append("username", formValue.username);
-      formData.append("password", formValue.password);
-      formData.append("email_address", formValue.email_address);
-      formData.append("gender", formValue.gender);
-      formData.append("contact_details", formValue.contact_details);
-      formData.append("professional_summary", formValue.professional_summary);
-      formData.append(
-        "highest_educational_attainment",
-        formValue.highest_educational_attainment
-      );
-      formData.append("isAdmin", formValue.isAdmin);
+      const reqbody = {
+        company_address: formValue.company_address,
+        company_contact: formValue.company_contact,
+        company_email: formValue.company_email,
+        company_name: formValue.company_name,
+        company_website: formValue.company_website,
+        username: formValue.username,
+        password: formValue.password,
+        account_status: formValue.account_status,
+      };
 
-      const response = await axios.post("users", formData);
-      console.log("after post: ", response.data);
-      navigate("/");
+      await axios
+        .post(`company`, reqbody, {
+          headers: headers,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            setCompany(response.data);
+            console.log(company);
+            navigate("/postJob");
+          }
+        });
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    axios.get("company", { headers: headers }).then((res) => {
+      if (res.data != null) setCompanyData(res.data);
+    });
+  });
+
   return (
     <div style={{ paddingLeft: "15px" }}>
+      <Typography variant="h4" gutterBottom component="div" sx={{ m: 1 }}>
+        Add a Company or view exisiting ones...
+      </Typography>
       <form>
         <div
           style={{
@@ -78,11 +121,11 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              App name:{" "}
+              Company Address:{" "}
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="name"
+              name="company_address"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
@@ -100,11 +143,11 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Email Address:{" "}
+              Contact:{" "}
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="email_address"
+              name="company_contact"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
@@ -129,11 +172,11 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Username:{" "}
+              Email:{" "}
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="username"
+              name="company_email"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
@@ -151,7 +194,87 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Password:{" "}
+              Company Name:{" "}
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="company_name"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+        </div>
+        <br />
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <div style={{ flex: 1, marginRight: "10px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Website:
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="company_website"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+          <div style={{ flex: 2, marginRight: "20px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Username:
+            </label>
+            <TextField
+              id="demo-helper-text-misaligned"
+              name="username"
+              onChange={handleChange}
+              size="small"
+              style={{ width: "300px" }}
+            />
+          </div>
+        </div>
+        <br />
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <div style={{ flex: 1, marginRight: "10px" }}>
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                textAlign: "right",
+                width: "200px",
+                lineHeight: "26px",
+                marginBottom: "10px",
+              }}
+            >
+              Password:
             </label>
             <TextField
               type="password"
@@ -164,110 +287,7 @@ function ApplicantRegisterForm() {
           </div>
         </div>
         <br />
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
-          <div style={{ flex: 1, marginRight: "10px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Gender:
-            </label>
-            <TextField
-              id="demo-helper-text-misaligned"
-              name="gender"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
-          </div>
-          <div style={{ flex: 2, marginRight: "20px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Contact:
-            </label>
-            <TextField
-              id="demo-helper-text-misaligned"
-              name="contact_details"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
-          </div>
-        </div>
         <br />
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
-          <div style={{ flex: 1, marginRight: "10px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Summary:
-            </label>
-            <TextField
-              id="demo-helper-text-misaligned"
-              name="professional_summary"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
-          </div>
-          <div style={{ flex: 2, marginRight: "20px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Education Attainment:
-            </label>
-            <TextField
-              id="demo-helper-text-misaligned"
-              name="highest_educational_attainment"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
-          </div>
-        </div>
-        <br />
-        Profile Photo: <input type="file" name="file" onChange={saveFile} />
-        <br /> <br />
         <Button
           variant="contained"
           value="Login"
@@ -281,8 +301,45 @@ function ApplicantRegisterForm() {
           Add
         </Button>
       </form>
+      <br />
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 400 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell align="center">Contact Details</StyledTableCell>
+              <StyledTableCell align="center">Webiste</StyledTableCell>
+              <StyledTableCell align="center">Email</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {companyData &&
+              companyData.map((compDeets, index) => (
+                <StyledTableRow key={compDeets.id}>
+                  <StyledTableCell component="th" scope="row">
+                    <Link
+                      to={`/company/${compDeets.id}/jobs?name=${compDeets.company_name}`}
+                    >
+                      {compDeets.company_name}
+                    </Link>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {compDeets.company_contact}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {compDeets.company_website}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {compDeets.company_email}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <br />
     </div>
   );
 }
 
-export default ApplicantRegisterForm;
+export default AddCompanyForm;

@@ -332,13 +332,12 @@ const ViewApplicants = () => {
             >
               Add
             </Button>
-            <br /> <br />
             <Button
               variant="contained"
               onClick={addCredentials}
               style={{
-                width: "100px",
-
+                width: "200px",
+                marginLeft: "10px",
                 backgroundColor: "alpha(theme.palette.common.white, 0.15)",
               }}
             >

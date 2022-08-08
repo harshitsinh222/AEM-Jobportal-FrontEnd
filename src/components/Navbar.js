@@ -22,7 +22,8 @@ export default function PrimarySearchAppBar() {
   const [app, setApp] = useLocalState("", "app");
   const [jwt, setJwt] = useLocalState("", "jwt");
   const navigate = useNavigate();
-
+  const [company, setCompany] = useLocalState("", "company");
+  const [url, setUrl] = useLocalState("", "url");
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const handleProfileMenuOpen = (event) => {
@@ -65,7 +66,9 @@ export default function PrimarySearchAppBar() {
   const handleLogout = async () => {
     handleMenuClose();
     await setJwt("");
+    await setUrl("");
     await setApp("");
+    await setCompany("");
     navigate("/");
   };
 
@@ -171,7 +174,13 @@ export default function PrimarySearchAppBar() {
   const navItems = ["Applied Jobs"];
 
   const handleAppliedJobs = () => {
-    navigate('/appliedJobs')
+    navigate("/appliedJobs");
+  };
+  const handleCheckApplicant = () => {
+    navigate("/checkApplicants");
+  };
+  const handleAddCompany = () => {
+    navigate("/addCompany");
   };
 
   return (
@@ -190,18 +199,44 @@ export default function PrimarySearchAppBar() {
           </Button>
 
           <Box sx={{ flexGrow: 1 }} />
-          {app && (
+          {app.isAdmin === 0 && (
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               {navItems.map((item) => (
                 <Button
                   key={item}
                   sx={{ color: "#fff" }}
                   onClick={handleAppliedJobs}
+                  style={{ color: "white", marginRight: "10px" }}
                 >
                   {item}
                 </Button>
               ))}
             </Box>
+          )}
+
+          {app.isAdmin === 1 && (<>
+            <Button
+              onClick={handleAddCompany}
+              variant="h6"
+              nowrap="true"
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+              style={{ color: "white" }}
+            >
+              Add a Company
+            </Button>
+             <Button
+             onClick={handleCheckApplicant}
+             variant="h6"
+             nowrap="true"
+             component="div"
+             sx={{ display: { xs: "none", sm: "block" } }}
+             style={{ color: "white" }}
+           >
+             View Job Applicants
+           </Button>
+          
+           </>
           )}
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton

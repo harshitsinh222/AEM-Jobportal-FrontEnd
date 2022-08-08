@@ -31,16 +31,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function CustomizedTables() {
+export default function UsersTable() {
   const [app, setApp] = useLocalState("", "app");
   const [jwt, setJwt] = useLocalState("", "jwt");
-  const [resumeURL, setResumeURL] = useLocalState("", "url");
-  const [credential, setCredential] = React.useState(null);
+  const [users, setUsers] = React.useState(null);
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${jwt} `,
   };
-  const url = `applicants/${app.id}/credentials`;
+  const url = `users`;
 
   React.useEffect(() => {
     axios
@@ -48,38 +47,40 @@ export default function CustomizedTables() {
         headers: { headers },
       })
       .then((res) => {
-        setCredential(res.data);
-        //console.log("cred: ", credential);
-        credential &&
-          credential.map((cred) => {
-            if (
-              cred.credential_name.toString().toLowerCase().includes("resume")
-            )
-              setResumeURL(cred.document);
-          });
+        setUsers(res.data);
       });
-  });
+  }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 500 }} aria-label="customized table">
+    <TableContainer component={Paper} sx={{ mx: 1 }}>
+      <Table sx={{ minWidth: 400 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Credential Name</StyledTableCell>
-            <StyledTableCell align="center">File</StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell align="center">Username</StyledTableCell>
+            <StyledTableCell align="center">Admin</StyledTableCell>
+            <StyledTableCell align="center">Gender</StyledTableCell>
+            <StyledTableCell align="center">Contact Details</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {credential &&
-            credential.map((cred) => (
-              <StyledTableRow key={cred.id}>
+          {users &&
+            users.map((userDeets) => (
+              <StyledTableRow key={userDeets.id}>
                 <StyledTableCell component="th" scope="row">
-                  <Link to={`/credentials/${cred.id}`}>
-                    {cred.credential_name}
-                  </Link>
+                  {userDeets.name}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  <a href={`${cred.document}`}>View</a>
+                  {userDeets.username}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {!userDeets.isAdmin && 1 ? "NO" : "YES"}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {userDeets.gender}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {userDeets.contact_details}
                 </StyledTableCell>
               </StyledTableRow>
             ))}

@@ -1,64 +1,68 @@
-import React, { useState } from "react";
 import axios from "axios";
-import { useLocalState } from "../util/useLocalStorage";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocalState } from "../util/useLocalStorage";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-function ApplicantRegisterForm() {
+const ViewJobs = () => {
+  const job_ID = window.location.href.split("/job/")[1];
+
+  const [jwt] = useLocalState("", "jwt");
+  const [formValue, setformValue] = useState({
+    job_description: "",
+    job_location: "",
+    job_posting_date: "",
+    job_salary: "",
+    job_status: "Hiring",
+    job_title: "",
+    last_application_date: "",
+    no_of_vacancy: "",
+  });
   const navigate = useNavigate();
 
-  const [file, setFile] = useState();
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${jwt} `,
+  };
 
-  const [formValue, setformValue] = useState({
-    name: "",
-    username: "",
-    password: "",
-    email_address: "",
-    gender: "",
-    contact_details: "",
-    professional_summary: "",
-    isAdmin: null,
-    highest_educational_attainment: "",
-  });
   const handleChange = (event) => {
     setformValue({
       ...formValue,
       [event.target.name]: event.target.value,
     });
-  }; 
-
-  const saveFile = (e) => {
-    setFile(e.target.files[0]);
   };
 
-  const sendPostRequest = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    axios.get(`${job_ID}`, { headers: headers }).then((res) => {
+      setformValue(res.data);
+    });
+  }, [job_ID]);
 
+  const saveJob = async () => {
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("name", formValue.name);
-      formData.append("username", formValue.username);
-      formData.append("password", formValue.password);
-      formData.append("email_address", formValue.email_address);
-      formData.append("gender", formValue.gender);
-      formData.append("contact_details", formValue.contact_details);
-      formData.append("professional_summary", formValue.professional_summary);
-      formData.append(
-        "highest_educational_attainment",
-        formValue.highest_educational_attainment
-      );
-      formData.append("isAdmin", formValue.isAdmin);
+      const reqbody = {
+        job_description: formValue.job_description,
+        job_location: formValue.job_location,
+        job_posting_date: formValue.job_posting_date,
+        job_salary: formValue.job_salary,
+        job_title: formValue.job_title,
+        last_application_date: formValue.last_application_date,
+        no_of_vacancy: formValue.no_of_vacancy,
+        job_status: formValue.job_status,
+      };
 
-      const response = await axios.post("users", formData);
-      console.log("after post: ", response.data);
-      navigate("/");
+      const res = await axios.put(`${job_ID}`, reqbody, {
+        headers: headers,
+      });
+      console.log("after put: ", res.data);
+      navigate("/postJob");
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
-    <div style={{ paddingLeft: "15px" }}>
+    <div style={{ paddingLeft: "15px", paddingTop: "20px" }}>
       <form>
         <div
           style={{
@@ -78,14 +82,15 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              App name:{" "}
+              Job Description:{" "}
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="name"
+              name="job_description"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
+              value={formValue.job_description}
             />
           </div>
           <div style={{ flex: 2, marginRight: "20px" }}>
@@ -100,14 +105,15 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Email Address:{" "}
+              Location:{" "}
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="email_address"
+              name="job_location"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
+              value={formValue.job_location}
             />
           </div>
         </div>
@@ -129,14 +135,15 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Username:{" "}
+              Posting Date:{" "}
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="username"
+              name="job_posting_date"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
+              value={formValue.job_posting_date}
             />
           </div>
           <div style={{ flex: 2, marginRight: "20px" }}>
@@ -151,15 +158,15 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Password:{" "}
+              Salary:{" "}
             </label>
             <TextField
-              type="password"
               id="demo-helper-text-misaligned"
-              name="password"
+              name="job_salary"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
+              value={formValue.job_salary}
             />
           </div>
         </div>
@@ -181,14 +188,15 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Gender:
+              Title:
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="gender"
+              name="job_title"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
+              value={formValue.job_title}
             />
           </div>
           <div style={{ flex: 2, marginRight: "20px" }}>
@@ -203,14 +211,15 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Contact:
+              Last Application Date:
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="contact_details"
+              name="last_application_date"
               onChange={handleChange}
               size="small"
               style={{ width: "300px" }}
+              value={formValue.last_application_date}
             />
           </div>
         </div>
@@ -232,57 +241,33 @@ function ApplicantRegisterForm() {
                 marginBottom: "10px",
               }}
             >
-              Summary:
+              Number of Vacanacy:
             </label>
             <TextField
               id="demo-helper-text-misaligned"
-              name="professional_summary"
+              name="no_of_vacancy"
               onChange={handleChange}
               size="small"
-              style={{ width: "300px" }}
-            />
-          </div>
-          <div style={{ flex: 2, marginRight: "20px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Education Attainment:
-            </label>
-            <TextField
-              id="demo-helper-text-misaligned"
-              name="highest_educational_attainment"
-              onChange={handleChange}
-              size="small"
+              value={formValue.no_of_vacancy}
               style={{ width: "300px" }}
             />
           </div>
         </div>
         <br />
-        Profile Photo: <input type="file" name="file" onChange={saveFile} />
-        <br /> <br />
         <Button
           variant="contained"
-          value="Login"
-          onClick={sendPostRequest}
+          value="update job"
+          onClick={saveJob}
           style={{
-            width: "100px",
-
+            width: "140px",
             backgroundColor: "alpha(theme.palette.common.white, 0.15)",
           }}
         >
-          Add
+          Update Job
         </Button>
       </form>
     </div>
   );
-}
+};
 
-export default ApplicantRegisterForm;
+export default ViewJobs;

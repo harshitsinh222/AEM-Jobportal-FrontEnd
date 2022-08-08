@@ -53,9 +53,8 @@ function LoginForm() {
   };
   useEffect(() => {
     //eslint-disable-line
-    if (jwt && app.isAdmin === 0) {
-      navigate("/");
-    } else if (jwt) console.log("Admin here");
+    if (jwt) navigate("/");
+    // } else if (jwt) console.log("Admin here");
   }, [jwt]);
   return (
     <>
