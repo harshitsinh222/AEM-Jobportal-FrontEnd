@@ -53,7 +53,9 @@ function LoginForm() {
   };
   useEffect(() => {
     //eslint-disable-line
-    if (jwt) navigate("/");
+    if (jwt && app.isAdmin === 0) {
+      navigate("/");
+    } else if (jwt) console.log("Admin here");
   }, [jwt]);
   return (
     <>
@@ -103,7 +105,6 @@ function LoginForm() {
             Login
           </Button>
         </form>
-        {console.log("error: ", error)}
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </>

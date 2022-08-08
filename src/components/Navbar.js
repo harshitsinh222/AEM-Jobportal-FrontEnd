@@ -163,7 +163,7 @@ export default function PrimarySearchAppBar() {
   React.useEffect(() => {
     return () => {
       app
-        ? setImgURL(`http://localhost:8080/applicants/profile/${app.id}`)
+        ? setImgURL(`http://localhost:8080/users/profile/${app.id}`)
         : setImgURL("");
     };
   }, [app]);
@@ -181,7 +181,7 @@ export default function PrimarySearchAppBar() {
           <Button
             onClick={handleHomePage}
             variant="h6"
-            noWrap
+            nowrap="true"
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
             style={{ color: "white" }}

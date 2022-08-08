@@ -1,7 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import Landing from "./pages/Landing";
 import ApplicantRegisterForm from "./sections/ApplicantRegisterForm";
 import AddCredentialForm from "./sections/AddCredentialForm";
 import LoginForm from "./sections/LoginForm";
@@ -11,6 +10,7 @@ import Navbar from "./components/Navbar";
 import ViewApplicants from "./pages/ViewApplicants";
 import ApplyJob from "./pages/ApplyJob";
 import AppliedJobsTable from "./pages/AppliedJobsTable";
+import LandingLayout from "./components/layouts/LandingLayout";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<LandingLayout />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/signup" element={<ApplicantRegisterForm />} />
 
