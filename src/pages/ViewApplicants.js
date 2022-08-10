@@ -4,24 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../util/useLocalStorage";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import CredentialsTable from "./CredentialsTable";
+import { Typography } from "@mui/material";
 
 const ViewApplicants = () => {
-  const applicant_ID = window.location.href.split("/applicants/")[1];
+  const ID = window.location.href.split("/users/")[1];
   const [file, setFile] = useState();
   const [jwt] = useLocalState("", "jwt");
   const navigate = useNavigate();
 
   const [formValue, setformValue] = useState({
-    applicant_name: "",
+    name: "",
     username: "",
-    applicant_password: "",
-    applicant_email_address: "",
-    applicant_gender: "",
-    applicant_contact_details: "",
-    applicant_professional_summary: "",
-    applicant_account_status: "No",
-    applicant_highest_educational_attainment: "",
+    password: "",
+    email_address: "",
+    gender: "",
+    contact_details: "",
+    professional_summary: "",
+    account_status: "No",
+    highest_educational_attainment: "",
   });
   const handleChange = (event) => {
     setformValue({
@@ -35,14 +35,10 @@ const ViewApplicants = () => {
   };
 
   useEffect(() => {
-    //  if (jwt) {
-    axios.get(`${applicant_ID}`).then((res) => {
-      // const ans = await res.data;
-      //console.log(res.data);
+    axios.get(`${ID}`).then((res) => {
       setformValue(res.data);
     });
-    //}
-  }, [applicant_ID]);
+  }, [ID]);
 
   const headers = {
     "Content-Type": "application/json",
@@ -57,30 +53,18 @@ const ViewApplicants = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("applicant_name", formValue.applicant_name);
+      formData.append("name", formValue.name);
       formData.append("username", formValue.username);
-      formData.append("applicant_password", formValue.applicant_password);
+      formData.append("password", formValue.password);
+      formData.append("email_address", formValue.email_address);
+      formData.append("gender", formValue.gender);
+      formData.append("contact_details", formValue.contact_details);
+      formData.append("professional_summary", formValue.professional_summary);
       formData.append(
-        "applicant_email_address",
-        formValue.applicant_email_address
+        "highest_educational_attainment",
+        formValue.highest_educational_attainment
       );
-      formData.append("applicant_gender", formValue.applicant_gender);
-      formData.append(
-        "applicant_contact_details",
-        formValue.applicant_contact_details
-      );
-      formData.append(
-        "applicant_professional_summary",
-        formValue.applicant_professional_summary
-      );
-      formData.append(
-        "applicant_highest_educational_attainment",
-        formValue.applicant_highest_educational_attainment
-      );
-      formData.append(
-        "applicant_account_status",
-        formValue.applicant_account_status
-      );
+      formData.append("account_status", formValue.account_status);
 
       console.log("fdv: ");
       // Display the values
@@ -88,7 +72,7 @@ const ViewApplicants = () => {
         console.log(value);
       }
 
-      const response = await axios.put(`${applicant_ID}`, formData, {
+      const response = await axios.put(`${ID}`, formData, {
         headers: headers,
       });
       console.log("after app update: ", response.data);
@@ -100,7 +84,9 @@ const ViewApplicants = () => {
 
   return (
     <div>
-      <h1>Applicant ID: {applicant_ID}</h1>
+      <Typography variant="h4" gutterBottom component="div" sx={{m:2}}>
+        Update User: {formValue.name}
+      </Typography>
 
       {formValue ? (
         <div style={{ paddingLeft: "15px" }}>
@@ -127,11 +113,11 @@ const ViewApplicants = () => {
                 </label>
                 <TextField
                   id="demo-helper-text-misaligned"
-                  name="applicant_name"
+                  name="name"
                   onChange={handleChange}
                   size="small"
                   style={{ width: "300px" }}
-                  value={formValue.applicant_name}
+                  value={formValue.name}
                 />
               </div>
               <div style={{ flex: 2, marginRight: "20px" }}>
@@ -150,11 +136,11 @@ const ViewApplicants = () => {
                 </label>
                 <TextField
                   id="demo-helper-text-misaligned"
-                  name="applicant_email_address"
+                  name="email_address"
                   onChange={handleChange}
                   size="small"
                   style={{ width: "300px" }}
-                  value={formValue.applicant_email_address}
+                  value={formValue.email_address}
                 />
               </div>
             </div>
@@ -180,7 +166,7 @@ const ViewApplicants = () => {
                 </label>
                 <TextField
                   id="demo-helper-text-misaligned"
-                  name="applicant_username"
+                  name="username"
                   onChange={handleChange}
                   size="small"
                   style={{ width: "300px" }}
@@ -204,7 +190,7 @@ const ViewApplicants = () => {
                 <TextField
                   type="password"
                   id="demo-helper-text-misaligned"
-                  name="applicant_password"
+                  name="password"
                   onChange={handleChange}
                   size="small"
                   style={{ width: "300px" }}
@@ -233,11 +219,11 @@ const ViewApplicants = () => {
                 </label>
                 <TextField
                   id="demo-helper-text-misaligned"
-                  name="applicant_gender"
+                  name="gender"
                   onChange={handleChange}
                   size="small"
                   style={{ width: "300px" }}
-                  value={formValue.applicant_gender}
+                  value={formValue.gender}
                 />
               </div>
               <div style={{ flex: 2, marginRight: "20px" }}>
@@ -256,11 +242,11 @@ const ViewApplicants = () => {
                 </label>
                 <TextField
                   id="demo-helper-text-misaligned"
-                  name="applicant_contact_details"
+                  name="contact_details"
                   onChange={handleChange}
                   size="small"
                   style={{ width: "300px" }}
-                  value={formValue.applicant_contact_details}
+                  value={formValue.contact_details}
                 />
               </div>
             </div>
@@ -286,11 +272,11 @@ const ViewApplicants = () => {
                 </label>
                 <TextField
                   id="demo-helper-text-misaligned"
-                  name="applicant_professional_summary"
+                  name="professional_summary"
                   onChange={handleChange}
                   size="small"
                   style={{ width: "300px" }}
-                  value={formValue.applicant_professional_summary}
+                  value={formValue.professional_summary}
                 />
               </div>
               <div style={{ flex: 2, marginRight: "20px" }}>
@@ -309,11 +295,11 @@ const ViewApplicants = () => {
                 </label>
                 <TextField
                   id="demo-helper-text-misaligned"
-                  name="applicant_highest_educational_attainment"
+                  name="highest_educational_attainment"
                   onChange={handleChange}
                   size="small"
                   style={{ width: "300px" }}
-                  value={formValue.applicant_highest_educational_attainment}
+                  value={formValue.highest_educational_attainment}
                 />
               </div>
             </div>

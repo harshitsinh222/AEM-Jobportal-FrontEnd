@@ -40,7 +40,7 @@ export default function CustomizedTables() {
     "Content-Type": "application/json",
     Authorization: `Bearer ${jwt} `,
   };
-  const url = `applicants/${app.id}/credentials`;
+  const url = `users/${app.id}/credentials`;
 
   React.useEffect(() => {
     axios

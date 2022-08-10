@@ -83,7 +83,7 @@ function App() {
             }
           />
           <Route
-            path="/applicants/:id"
+            path="/users/:id"
             element={
               <PrivateRoute>
                 <ViewApplicants />

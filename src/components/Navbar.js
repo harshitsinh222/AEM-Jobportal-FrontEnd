@@ -20,12 +20,23 @@ export default function PrimarySearchAppBar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [imgURL, setImgURL] = React.useState("");
   const [app, setApp] = useLocalState("", "app");
+  const [localApp, setLocalApp] = React.useState({});
   const [jwt, setJwt] = useLocalState("", "jwt");
   const navigate = useNavigate();
   const [company, setCompany] = useLocalState("", "company");
   const [url, setUrl] = useLocalState("", "url");
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [time, setTime] = React.useState(Date.now());
+
+  // componentDidMount() {
+  //   this.interval = setInterval(() => this.tick(), 1000)
+  // }
+
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -44,8 +55,7 @@ export default function PrimarySearchAppBar() {
 
   const handleProfile = () => {
     handleMobileMenuClose();
-    // <Link to={`/applicants/${app.id}`}></Link>;
-    navigate(`/applicants/${app.id}`);
+    navigate(`/users/${localApp.id}`);
   };
 
   const handleSignup = () => {
@@ -65,10 +75,12 @@ export default function PrimarySearchAppBar() {
 
   const handleLogout = async () => {
     handleMenuClose();
-    await setJwt("");
-    await setUrl("");
-    await setApp("");
-    await setCompany("");
+    localStorage.clear();
+    setLocalApp({});
+    // await setJwt("");
+    // await setUrl("");
+    // await setApp("");
+    // await setCompany("");
     navigate("/");
   };
 
@@ -89,7 +101,7 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {app ? (
+      {localApp ? (
         <Menu
           anchorEl={anchorEl}
           anchorOrigin={{
@@ -164,12 +176,9 @@ export default function PrimarySearchAppBar() {
   );
 
   React.useEffect(() => {
-    return () => {
-      app
-        ? setImgURL(`http://localhost:8080/users/profile/${app.id}`)
-        : setImgURL("");
-    };
-  }, [app]);
+    setLocalApp(JSON.parse(localStorage.getItem("app")));
+    localStorage.getItem("app")?.length  ? setImgURL(`http://localhost:8080/users/profile/${JSON.parse(localStorage.getItem("app")).id}`) : setImgURL("");
+  }, [localStorage.getItem("app")]);
 
   const navItems = ["Applied Jobs"];
 
@@ -199,7 +208,7 @@ export default function PrimarySearchAppBar() {
           </Button>
 
           <Box sx={{ flexGrow: 1 }} />
-          {app.isAdmin === 0 && (
+          {localApp && localApp.isAdmin === 0 ? (
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               {navItems.map((item) => (
                 <Button
@@ -212,32 +221,32 @@ export default function PrimarySearchAppBar() {
                 </Button>
               ))}
             </Box>
-          )}
+          ) : null}
 
-          {app.isAdmin === 1 && (<>
-            <Button
-              onClick={handleAddCompany}
-              variant="h6"
-              nowrap="true"
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-              style={{ color: "white" }}
-            >
-              Add a Company
-            </Button>
-             <Button
-             onClick={handleCheckApplicant}
-             variant="h6"
-             nowrap="true"
-             component="div"
-             sx={{ display: { xs: "none", sm: "block" } }}
-             style={{ color: "white" }}
-           >
-             View Job Applicants
-           </Button>
-          
-           </>
-          )}
+          {localApp && localApp.isAdmin === 1 ? (
+            <>
+              <Button
+                onClick={handleAddCompany}
+                variant="h6"
+                nowrap="true"
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+                style={{ color: "white" }}
+              >
+                Add a Company
+              </Button>
+              <Button
+                onClick={handleCheckApplicant}
+                variant="h6"
+                nowrap="true"
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+                style={{ color: "white" }}
+              >
+                View Job Applicants
+              </Button>
+            </>
+          ) : null}
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               onClick={handleProfileMenuOpen}
@@ -248,7 +257,7 @@ export default function PrimarySearchAppBar() {
               aria-haspopup="true"
               color="inherit"
             >
-              {app ? (
+              {localApp ? (
                 <Avatar alt="Remy Sharp" src={imgURL} />
               ) : (
                 <Avatar

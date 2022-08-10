@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useLocalState } from "../util/useLocalStorage";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
+import ViewJobApplicants from "./ViewJobApplicants";
 const ViewJobs = () => {
   const job_ID = window.location.href.split("/job/")[1];
 
@@ -63,6 +65,10 @@ const ViewJobs = () => {
 
   return (
     <div style={{ paddingLeft: "15px", paddingTop: "20px" }}>
+      <Typography variant="h4" gutterBottom component="div">
+        Update Job: {formValue.job_title}
+      </Typography>
+
       <form>
         <div
           style={{
@@ -266,6 +272,8 @@ const ViewJobs = () => {
           Update Job
         </Button>
       </form>
+      <br/>
+      <ViewJobApplicants/>
     </div>
   );
 };

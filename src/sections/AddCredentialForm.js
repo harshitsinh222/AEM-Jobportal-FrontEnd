@@ -38,7 +38,7 @@ function AddCredentialForm() {
       formData.append("credential_name", formValue.credential_name);
 
       const response = await axios.post(
-        `applicants/${app.id}/credentials`,
+        `users/${app.id}/credentials`,
         formData,
         { headers: headers }
       );

@@ -220,7 +220,7 @@ const RightPanel = ({
             width: "110px",
           }}
         >
-          <span style={{ color: "green" }}> ${salary} a year </span>
+          <span style={{ color: "green" }}> ${salary}/year </span>
         </Typography>
         <br />
         {{ btnShow } ? (
