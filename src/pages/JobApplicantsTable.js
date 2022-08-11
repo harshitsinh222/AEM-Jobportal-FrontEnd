@@ -12,7 +12,6 @@ import { useLocalState } from "../util/useLocalStorage";
 import { Link } from "react-router-dom";
 import { Button, FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { useState } from "react";
-import JobApplicantsTable from "./JobApplicantsTable";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,9 +33,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function ViewJobApplicants() {
-  const jobId = window.location.href.split("/job/")[1];
-
+const JobApplicantsTable = () => {
+  const [app, setApp] = useLocalState("", "app");
   const [jwt, setJwt] = useLocalState("", "jwt");
   const [appDetails, setAppDetails] = React.useState(null);
   const [disabled, setDisabled] = useState(false);
@@ -45,8 +43,7 @@ export default function ViewJobApplicants() {
     "Content-Type": "application/json",
     Authorization: `Bearer ${jwt} `,
   };
-  
-  const url = `/appdetails/${jobId}`;
+  const url = `/appdetails`;
 
   React.useEffect(() => {
     axios
@@ -54,8 +51,8 @@ export default function ViewJobApplicants() {
         headers: { headers },
       })
       .then((res) => {
+        //  console.log("appd: ", res.data);
         setAppDetails(res.data);
-        console.log("appd: ", appDetails);
       });
   });
 
@@ -118,4 +115,6 @@ export default function ViewJobApplicants() {
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default JobApplicantsTable;

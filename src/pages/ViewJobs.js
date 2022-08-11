@@ -272,8 +272,11 @@ const ViewJobs = () => {
           Update Job
         </Button>
       </form>
-      <br/>
-      <ViewJobApplicants/>
+      <br />
+      <Typography variant="h4" gutterBottom component="div">
+        Applicants List..
+      </Typography>
+      <ViewJobApplicants />
     </div>
   );
 };

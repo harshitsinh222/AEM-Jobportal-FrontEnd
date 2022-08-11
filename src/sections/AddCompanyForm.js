@@ -92,7 +92,7 @@ function AddCompanyForm() {
   };
 
   useEffect(() => {
-    axios.get("company", { headers: headers }).then((res) => {
+    axios.get("/company", { headers: headers }).then((res) => {
       if (res.data != null) setCompanyData(res.data);
     });
   });
