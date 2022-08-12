@@ -26,7 +26,7 @@ const ApplyJob = (props) => {
   };
 
   const reqBody = {
-    application_status: "applied",
+    application_status: "Applied",
     application_doc: resumeURL,
   };
 

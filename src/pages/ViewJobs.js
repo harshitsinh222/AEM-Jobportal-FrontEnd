@@ -57,7 +57,7 @@ const ViewJobs = () => {
         headers: headers,
       });
       console.log("after put: ", res.data);
-      navigate("/postJob");
+      navigate(`/addCompany`);
     } catch (err) {
       console.log(err);
     }

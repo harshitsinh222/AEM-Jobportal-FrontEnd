@@ -46,7 +46,7 @@ function PostJobForm(props) {
         job_status: formValue.job_status,
       };
       await axios
-        .post(`/jobs`, reqbody, {
+        .post(`/company/${props.cid}/jobs`, reqbody, {
           headers: headers,
         })
         .then((res) => {
