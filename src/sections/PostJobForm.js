@@ -10,6 +10,7 @@ function PostJobForm(props) {
   const navigate = useNavigate();
   const [company, setCompany] = useLocalState("", "company");
   const [jwt] = useLocalState("", "jwt");
+  const [validator, setValidator] = useState(false);
   const [formValue, setformValue] = useState({
     job_description: "",
     job_location: "",
@@ -35,33 +36,46 @@ function PostJobForm(props) {
     e.preventDefault();
 
     try {
-      const reqbody = {
-        job_description: formValue.job_description,
-        job_location: formValue.job_location,
-        job_posting_date: formValue.job_posting_date,
-        job_salary: formValue.job_salary,
-        job_title: formValue.job_title,
-        last_application_date: formValue.last_application_date,
-        no_of_vacancy: formValue.no_of_vacancy,
-        job_status: formValue.job_status,
-      };
-      await axios
-        .post(`/company/${props.cid}/jobs`, reqbody, {
-          headers: headers,
-        })
-        .then((res) => {
-          // console.log("after post: ", response.data);
-          setformValue({
-            job_description: "",
-            job_location: "",
-            job_posting_date: "",
-            job_salary: "",
-            job_title: "",
-            last_application_date: "",
-            no_of_vacancy: "",
-            job_status: "",
+      if (
+        formValue.job_description !== "" &&
+        formValue.job_location !== "" &&
+        formValue.job_posting_date !== "" &&
+        formValue.job_salary !== "" &&
+        formValue.job_title !== "" &&
+        formValue.last_application_date !== "" &&
+        formValue.no_of_vacancy !== ""
+      ) {
+        setValidator(false);
+        const reqbody = {
+          job_description: formValue.job_description,
+          job_location: formValue.job_location,
+          job_posting_date: formValue.job_posting_date,
+          job_salary: formValue.job_salary,
+          job_title: formValue.job_title,
+          last_application_date: formValue.last_application_date,
+          no_of_vacancy: formValue.no_of_vacancy,
+          job_status: formValue.job_status,
+        };
+        await axios
+          .post(`/company/${props.cid}/jobs`, reqbody, {
+            headers: headers,
+          })
+          .then((res) => {
+            // console.log("after post: ", response.data);
+            setformValue({
+              job_description: "",
+              job_location: "",
+              job_posting_date: "",
+              job_salary: "",
+              job_title: "",
+              last_application_date: "",
+              no_of_vacancy: "",
+              job_status: "",
+            });
           });
-        });
+      } else {
+        setValidator(true);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -74,7 +88,7 @@ function PostJobForm(props) {
       .then((res) => {
         setJobData(res.data);
       });
-  });
+  }, (validator, jobData));
   return (
     <div style={{ paddingLeft: "15px" }}>
       <form>
@@ -280,6 +294,7 @@ function PostJobForm(props) {
         >
           Add Job
         </Button>
+        {validator && <span>Please fill all the fields</span>}
       </form>
       <br />
     </div>

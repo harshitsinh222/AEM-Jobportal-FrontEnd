@@ -14,7 +14,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Typography } from "@mui/material";
-
+import Box from "@mui/material/Box";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -36,10 +36,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 function AddCompanyForm() {
   const navigate = useNavigate();
-
+  const [text, setText] = useState();
   const [company, setCompany] = useLocalState("", "company");
   const [companyData, setCompanyData] = useState(null);
   const [jwt] = useLocalState("", "jwt");
+  const [validator, setValidator] = useState(false);
   const [formValue, setformValue] = useState({
     company_address: "",
     company_contact: "",
@@ -64,20 +65,33 @@ function AddCompanyForm() {
     e.preventDefault();
 
     try {
-      const reqbody = {
-        company_address: formValue.company_address,
-        company_contact: formValue.company_contact,
-        company_email: formValue.company_email,
-        company_name: formValue.company_name,
-        company_website: formValue.company_website,
-        username: formValue.username,
-        password: formValue.password,
-        account_status: formValue.account_status,
-      };
+      if (
+        formValue.company_address !== "" &&
+        formValue.company_contact !== "" &&
+        formValue.company_email !== "" &&
+        formValue.company_name !== "" &&
+        formValue.company_website !== "" &&
+        formValue.username !== "" &&
+        formValue.password !== ""
+      ) {
+        setValidator(false);
+        const reqbody = {
+          company_address: formValue.company_address,
+          company_contact: formValue.company_contact,
+          company_email: formValue.company_email,
+          company_name: formValue.company_name,
+          company_website: formValue.company_website,
+          username: formValue.username,
+          password: formValue.password,
+          account_status: formValue.account_status,
+        };
 
-      await axios.post(`company`, reqbody, {
-        headers: headers,
-      });
+        await axios.post(`company`, reqbody, {
+          headers: headers,
+        });
+      } else {
+        setValidator(true);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -87,217 +101,231 @@ function AddCompanyForm() {
     axios.get("/company", { headers: headers }).then((res) => {
       if (res.data != null) setCompanyData(res.data);
     });
-  });
+  }, (validator, companyData));
 
   return (
     <div style={{ paddingLeft: "15px" }}>
       <Typography variant="h4" gutterBottom component="div" sx={{ m: 1 }}>
         Add a Company or view exisiting ones...
       </Typography>
-      <form>
-        <div
-          style={{
-            display: "flex",
-            paddingTop: "20px",
-          }}
-        >
-          <div style={{ flex: 1, marginRight: "10px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Company Address:{" "}
-            </label>
-            <TextField
-              id="demo-helper-text-misaligned"
-              name="company_address"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
+      <Box
+        component="form"
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <form>
+          <div
+            style={{
+              display: "flex",
+              paddingTop: "20px",
+            }}
+          >
+            <div style={{ flex: 1, marginRight: "10px" }}>
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  textAlign: "right",
+                  width: "200px",
+                  lineHeight: "26px",
+                  marginBottom: "10px",
+                }}
+              >
+                Company Address:{" "}
+              </label>
+              <TextField
+                required
+                id="demo-helper-text-misaligned"
+                name="company_address"
+                onChange={handleChange}
+                size="small"
+                style={{ width: "300px" }}
+                error={text === ""}
+                helperText={text === "" ? "Empty!" : " "}
+              />
+            </div>
+            <div style={{ flex: 2, marginRight: "20px" }}>
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  textAlign: "right",
+                  width: "200px",
+                  lineHeight: "26px",
+                  marginBottom: "10px",
+                }}
+              >
+                Contact:{" "}
+              </label>
+              <TextField
+                required
+                id="demo-helper-text-misaligned"
+                name="company_contact"
+                onChange={handleChange}
+                size="small"
+                style={{ width: "300px" }}
+              />
+            </div>
           </div>
-          <div style={{ flex: 2, marginRight: "20px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Contact:{" "}
-            </label>
-            <TextField
-              id="demo-helper-text-misaligned"
-              name="company_contact"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
+          <br />
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <div style={{ flex: 1, marginRight: "10px" }}>
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  textAlign: "right",
+                  width: "200px",
+                  lineHeight: "26px",
+                  marginBottom: "10px",
+                }}
+              >
+                Email:{" "}
+              </label>
+              <TextField
+                required
+                id="demo-helper-text-misaligned"
+                name="company_email"
+                onChange={handleChange}
+                size="small"
+                style={{ width: "300px" }}
+              />
+            </div>
+            <div style={{ flex: 2, marginRight: "20px" }}>
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  textAlign: "right",
+                  width: "200px",
+                  lineHeight: "26px",
+                  marginBottom: "10px",
+                }}
+              >
+                Company Name:{" "}
+              </label>
+              <TextField
+                required
+                id="demo-helper-text-misaligned"
+                name="company_name"
+                onChange={handleChange}
+                size="small"
+                style={{ width: "300px" }}
+              />
+            </div>
           </div>
-        </div>
-        <br />
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
-          <div style={{ flex: 1, marginRight: "10px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Email:{" "}
-            </label>
-            <TextField
-              required
-              id="demo-helper-text-misaligned"
-              name="company_email"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
+          <br />
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <div style={{ flex: 1, marginRight: "10px" }}>
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  textAlign: "right",
+                  width: "200px",
+                  lineHeight: "26px",
+                  marginBottom: "10px",
+                }}
+              >
+                Website:
+              </label>
+              <TextField
+                required
+                id="demo-helper-text-misaligned"
+                name="company_website"
+                onChange={handleChange}
+                size="small"
+                style={{ width: "300px" }}
+              />
+            </div>
+            <div style={{ flex: 2, marginRight: "20px" }}>
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  textAlign: "right",
+                  width: "200px",
+                  lineHeight: "26px",
+                  marginBottom: "10px",
+                }}
+              >
+                Username:
+              </label>
+              <TextField
+                required
+                id="demo-helper-text-misaligned"
+                name="username"
+                onChange={handleChange}
+                size="small"
+                style={{ width: "300px" }}
+              />
+            </div>
           </div>
-          <div style={{ flex: 2, marginRight: "20px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Company Name:{" "}
-            </label>
-            <TextField
-              required
-              id="demo-helper-text-misaligned"
-              name="company_name"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
+          <br />
+          <div
+            style={{
+              display: "flex",
+            }}
+          >
+            <div style={{ flex: 1, marginRight: "10px" }}>
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  textAlign: "right",
+                  width: "200px",
+                  lineHeight: "26px",
+                  marginBottom: "10px",
+                }}
+              >
+                Password:
+              </label>
+              <TextField
+                required
+                type="password"
+                id="demo-helper-text-misaligned"
+                name="password"
+                onChange={handleChange}
+                size="small"
+                style={{ width: "300px" }}
+              />
+            </div>
           </div>
-        </div>
-        <br />
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
-          <div style={{ flex: 1, marginRight: "10px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Website:
-            </label>
-            <TextField
-              required
-              id="demo-helper-text-misaligned"
-              name="company_website"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
-          </div>
-          <div style={{ flex: 2, marginRight: "20px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Username:
-            </label>
-            <TextField
-              required
-              id="demo-helper-text-misaligned"
-              name="username"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
-          </div>
-        </div>
-        <br />
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
-          <div style={{ flex: 1, marginRight: "10px" }}>
-            <label
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                textAlign: "right",
-                width: "200px",
-                lineHeight: "26px",
-                marginBottom: "10px",
-              }}
-            >
-              Password:
-            </label>
-            <TextField
-              required
-              type="password"
-              id="demo-helper-text-misaligned"
-              name="password"
-              onChange={handleChange}
-              size="small"
-              style={{ width: "300px" }}
-            />
-          </div>
-        </div>
-        <br />
-        <br />
-        <Button
-          variant="contained"
-          value="Login"
-          onClick={sendPostRequest}
-          style={{
-            width: "100px",
+          <br />
+          <br />
+          <Button
+            variant="contained"
+            value="Login"
+            onClick={sendPostRequest}
+            style={{
+              width: "100px",
 
-            backgroundColor: "alpha(theme.palette.common.white, 0.15)",
-          }}
-        >
-          Add
-        </Button>
-      </form>
+              backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+            }}
+          >
+            Add
+          </Button>
+          {validator && <span>Please fill all the fields</span>}
+        </form>
+      </Box>
       <br />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 400 }} aria-label="customized table">
