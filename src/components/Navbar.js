@@ -77,12 +77,16 @@ export default function PrimarySearchAppBar() {
     handleMenuClose();
     localStorage.clear();
     setLocalApp({});
-    // await setJwt("");
-    // await setUrl("");
-    // await setApp("");
-    // await setCompany("");
-    navigate("/");
+    // setJwt("");
+    // setUrl("");
+    // setApp("");
+    // setCompany("");
   };
+  React.useEffect(() => {
+    if (localStorage.length == 0) {
+      navigate("/login");
+    }
+  }, [localStorage.length]);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (

@@ -440,19 +440,24 @@ export const TeamCardDemo = React.memo(function TeamCard() {
               </div>
             )}
           </Items>
-          <Items
-            direction="column"
-            style={{
-              width: "800px",
-              overflowX: "hidden",
-              overflowY: "scroll",
 
-              height: 600,
-            }}
-          >
-            {selectedSpecificJob && (
-              <div>
-                <Grid style={{ width: "800px" }} spacing={10}>
+          {selectedSpecificJob && (
+            <Items
+              direction="column"
+              style={{
+                width: "800px",
+                overflowX: "hidden",
+                overflowY: "scroll",
+                height: 600,
+              }}
+            >
+              <div style={{}}>
+                <Grid
+                  style={{
+                    width: "800px",
+                  }}
+                  spacing={10}
+                >
                   <RightPanel
                     jobid={selectedSpecificJob.id}
                     postingdate={selectedSpecificJob.job_posting_date}
@@ -472,8 +477,8 @@ export const TeamCardDemo = React.memo(function TeamCard() {
                   ></RightPanel>
                 </Grid>
               </div>
-            )}
-          </Items>
+            </Items>
+          )}
         </Grid>
       </Box>
     </div>

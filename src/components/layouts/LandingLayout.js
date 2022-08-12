@@ -5,8 +5,10 @@ import TeamCardDemo from "./TeamCardDemo";
 import { useLocalState } from "../../util/useLocalStorage";
 import { Typography } from "@mui/material";
 import UsersTable from "../../pages/UsersTable";
+import { useEffect } from "react";
 function LandingLayout() {
   const [app] = useLocalState("", "app");
+
   return (
     <div style={{ width: "100%", backgroundColor: "#faf9f8" }}>
       <Box

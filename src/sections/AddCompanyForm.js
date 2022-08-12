@@ -75,17 +75,9 @@ function AddCompanyForm() {
         account_status: formValue.account_status,
       };
 
-      await axios
-        .post(`company`, reqbody, {
-          headers: headers,
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            setCompany(response.data);
-            console.log(company);
-            navigate("/postJob");
-          }
-        });
+      await axios.post(`company`, reqbody, {
+        headers: headers,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -175,6 +167,7 @@ function AddCompanyForm() {
               Email:{" "}
             </label>
             <TextField
+              required
               id="demo-helper-text-misaligned"
               name="company_email"
               onChange={handleChange}
@@ -197,6 +190,7 @@ function AddCompanyForm() {
               Company Name:{" "}
             </label>
             <TextField
+              required
               id="demo-helper-text-misaligned"
               name="company_name"
               onChange={handleChange}
@@ -226,6 +220,7 @@ function AddCompanyForm() {
               Website:
             </label>
             <TextField
+              required
               id="demo-helper-text-misaligned"
               name="company_website"
               onChange={handleChange}
@@ -248,6 +243,7 @@ function AddCompanyForm() {
               Username:
             </label>
             <TextField
+              required
               id="demo-helper-text-misaligned"
               name="username"
               onChange={handleChange}
@@ -277,6 +273,7 @@ function AddCompanyForm() {
               Password:
             </label>
             <TextField
+              required
               type="password"
               id="demo-helper-text-misaligned"
               name="password"

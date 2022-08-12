@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-function PostJobForm() {
+function PostJobForm(props) {
   const [jobData, setJobData] = React.useState(null);
   const navigate = useNavigate();
   const [company, setCompany] = useLocalState("", "company");
@@ -46,7 +46,7 @@ function PostJobForm() {
         job_status: formValue.job_status,
       };
       await axios
-        .post(`company/${company.id}/jobs`, reqbody, {
+        .post(`/jobs`, reqbody, {
           headers: headers,
         })
         .then((res) => {
@@ -61,8 +61,6 @@ function PostJobForm() {
             no_of_vacancy: "",
             job_status: "",
           });
-
-          console.log("fv: ", formValue);
         });
     } catch (err) {
       console.log(err);
@@ -70,7 +68,7 @@ function PostJobForm() {
   };
   useEffect(() => {
     axios
-      .get(`company/${company.id}/jobs`, {
+      .get(`/jobs`, {
         headers: { headers },
       })
       .then((res) => {
@@ -284,7 +282,6 @@ function PostJobForm() {
         </Button>
       </form>
       <br />
-      
     </div>
   );
 }

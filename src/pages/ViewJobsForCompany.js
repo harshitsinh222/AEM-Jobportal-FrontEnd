@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper";
 import { Link, useLocation } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { useLocalState } from "../util/useLocalStorage";
+import PostJobForm from "../sections/PostJobForm";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -60,6 +61,7 @@ const ViewJobsForCompany = () => {
 
   return (
     <>
+      <PostJobForm cid={company_ID} />
       <Typography variant="h5" gutterBottom component="div" sx={{ m: 1 }}>
         Jobs for company {compName}:
       </Typography>
