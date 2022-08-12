@@ -4,7 +4,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useLocalState } from "../util/useLocalStorage";
 import { useNavigate } from "react-router-dom";
-function LoginForm() {
+
+const LoginForm = (props) => {
   const navigate = useNavigate();
   const [jwt, setJwt] = useLocalState("", "jwt");
   const [app, setApp] = useLocalState("", "app");
@@ -43,18 +44,20 @@ function LoginForm() {
         if (response.status === 200) {
           setJwt(response.headers.authorization);
           setApp(response.data);
+          console.log("jwt ", jwt);
+          props.showAlert("Logged In Successfully", "success");
+          // navigate("/");
         }
       })
       .catch((err) => {
         if (err.response.status === 401) {
           setError("Invalid Credentials!");
+          props.showAlert("Invalid Credentials", "error");
         } else setError("Server error!");
       });
   };
   useEffect(() => {
-    //eslint-disable-line
     if (jwt) navigate("/");
-    // } else if (jwt) console.log("Admin here");
   }, [jwt]);
   return (
     <>
@@ -108,6 +111,6 @@ function LoginForm() {
       </div>
     </>
   );
-}
+};
 
 export default LoginForm;

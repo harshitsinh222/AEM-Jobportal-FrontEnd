@@ -4,7 +4,7 @@ import { useLocalState } from "../util/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-function ApplicantRegisterForm() {
+function ApplicantRegisterForm(props) {
   const navigate = useNavigate();
 
   const [file, setFile] = useState();
@@ -25,7 +25,7 @@ function ApplicantRegisterForm() {
       ...formValue,
       [event.target.name]: event.target.value,
     });
-  }; 
+  };
 
   const saveFile = (e) => {
     setFile(e.target.files[0]);
@@ -50,9 +50,17 @@ function ApplicantRegisterForm() {
       );
       formData.append("isAdmin", formValue.isAdmin);
 
-      const response = await axios.post("users", formData);
-      console.log("after post: ", response.data);
-      navigate("/");
+      await axios
+        .post("users", formData)
+        .then((res) => {
+          if (res.status === 200) {
+            props.showAlert("Logged In Successfully", "success");
+            navigate("/");
+          }
+        })
+        .catch((err) => {
+          props.showAlert("Invalid Credentials", "error");
+        });
     } catch (err) {
       console.log(err);
     }

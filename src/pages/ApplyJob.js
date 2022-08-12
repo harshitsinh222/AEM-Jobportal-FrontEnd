@@ -3,10 +3,11 @@ import { Button, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import AlertBox from "../components/AlertBox";
 import { useLocalState } from "../util/useLocalStorage";
 import CredentialsTable from "./CredentialsTable";
 
-const ApplyJob = () => {
+const ApplyJob = (props) => {
   const [jwt, setJwt] = useLocalState("", "jwt");
   const [resumeURL, setResumeURL] = useLocalState("", "url");
 
@@ -32,13 +33,19 @@ const ApplyJob = () => {
   const navigate = useNavigate();
 
   const handleApplyJob = async () => {
-    //console.log('req',reqBody);
     await axios
       .post(`appdetails/${appid}/${jobid}`, reqBody, {
         headers: headers,
       })
-      .then(navigate("/"));
+      .then(() => {
+        props.showAlert("Job Applied Successfully!", "success");
+        navigate("/");
+      })
+      .catch((err) => {
+        props.showAlert("Job Not Applied!", "error");
+      });
   };
+
   const handleCancelJob = () => {
     navigate("/");
   };

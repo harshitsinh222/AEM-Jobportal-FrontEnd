@@ -16,21 +16,35 @@ import ViewJobs from "./pages/ViewJobs";
 import LandingLayout from "./components/layouts/LandingLayout";
 import { useState } from "react";
 import ViewJobsForCompany from "./pages/ViewJobsForCompany";
+import AlertBox from "./components/AlertBox";
 function App() {
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (msg, type) => {
+    setAlert({
+      msg: msg,
+      type: type,
+    });
+    console.log('set al: ', alert);
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
   return (
     <>
       <Router>
         <Navbar />
+        <AlertBox alert={alert}/>
         <Routes>
           <Route path="/" element={<LandingLayout />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/signup" element={<ApplicantRegisterForm />} />
+          <Route path="/login" element={<LoginForm showAlert={showAlert}/>} />
+          <Route path="/signup" element={<ApplicantRegisterForm showAlert={showAlert}/>} />
 
           <Route
             path="/applyJob"
             element={
               <PrivateRoute>
-                <ApplyJob />
+                <ApplyJob showAlert={showAlert}/>
               </PrivateRoute>
             }
           />

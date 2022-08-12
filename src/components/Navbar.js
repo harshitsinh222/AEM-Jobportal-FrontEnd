@@ -177,16 +177,19 @@ export default function PrimarySearchAppBar() {
 
   React.useEffect(() => {
     setLocalApp(JSON.parse(localStorage.getItem("app")));
-    localStorage.getItem("app")?.length  ? setImgURL(`http://localhost:8080/users/profile/${JSON.parse(localStorage.getItem("app")).id}`) : setImgURL("");
+    localStorage.getItem("app")?.length
+      ? setImgURL(
+          `http://localhost:8080/users/profile/${
+            JSON.parse(localStorage.getItem("app")).id
+          }`
+        )
+      : setImgURL("");
   }, [localStorage.getItem("app")]);
 
   const navItems = ["Applied Jobs"];
 
   const handleAppliedJobs = () => {
     navigate("/appliedJobs");
-  };
-  const handleCheckApplicant = () => {
-    navigate("/checkApplicants");
   };
   const handleAddCompany = () => {
     navigate("/addCompany");
@@ -234,16 +237,6 @@ export default function PrimarySearchAppBar() {
                 style={{ color: "white" }}
               >
                 Add a Company
-              </Button>
-              <Button
-                onClick={handleCheckApplicant}
-                variant="h6"
-                nowrap="true"
-                component="div"
-                sx={{ display: { xs: "none", sm: "block" } }}
-                style={{ color: "white" }}
-              >
-                View Job Applicants
               </Button>
             </>
           ) : null}

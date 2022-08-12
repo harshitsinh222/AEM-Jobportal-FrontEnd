@@ -10,6 +10,7 @@ const ViewApplicants = () => {
   const ID = window.location.href.split("/users/")[1];
   const [file, setFile] = useState();
   const [jwt] = useLocalState("", "jwt");
+  const [app, setApp] = useLocalState("", "app");
   const navigate = useNavigate();
 
   const [formValue, setformValue] = useState({
@@ -84,7 +85,7 @@ const ViewApplicants = () => {
 
   return (
     <div>
-      <Typography variant="h4" gutterBottom component="div" sx={{m:2}}>
+      <Typography variant="h4" gutterBottom component="div" sx={{ m: 2 }}>
         Update User: {formValue.name}
       </Typography>
 
@@ -318,17 +319,19 @@ const ViewApplicants = () => {
             >
               Add
             </Button>
-            <Button
-              variant="contained"
-              onClick={addCredentials}
-              style={{
-                width: "200px",
-                marginLeft: "10px",
-                backgroundColor: "alpha(theme.palette.common.white, 0.15)",
-              }}
-            >
-              Add Credentials
-            </Button>
+            {app.isAdmin === 0 && (
+              <Button
+                variant="contained"
+                onClick={addCredentials}
+                style={{
+                  width: "200px",
+                  marginLeft: "10px",
+                  backgroundColor: "alpha(theme.palette.common.white, 0.15)",
+                }}
+              >
+                Add Credentials
+              </Button>
+            )}
           </form>
         </div>
       ) : (

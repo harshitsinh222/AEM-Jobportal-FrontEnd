@@ -39,7 +39,7 @@ export default function CustomizedTables() {
     "Content-Type": "application/json",
     Authorization: `Bearer ${jwt} `,
   };
-  const url = `appdetails/${app.id}`;
+  const url = `appdetails/appId/${app.id}`;
 
   React.useEffect(() => {
     axios
@@ -47,7 +47,9 @@ export default function CustomizedTables() {
         headers: { headers },
       })
       .then((res) => {
+        // console.log('ajt: ', res.data);
         setAppDetails(res.data);
+        // console.log('ajt: ', res.data);
       });
   }, []);
 
